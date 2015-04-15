@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sandbox.Sandbox
+namespace Sandbox.Contracts
 {
-    public interface ISandbox
+    public class OutputArgs
     {
-        string Run(string executablePath);
     }
 }

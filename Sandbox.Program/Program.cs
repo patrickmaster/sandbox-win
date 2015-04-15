@@ -13,8 +13,9 @@ namespace Sandbox.Program
         {
             ISandbox sandbox = Manager.GetSandbox();
 
-            sandbox.Run(@"Sandbox.ExampleApp.exe", "output2.txt");
+            string output = sandbox.Run(@"sandbox\Sandbox.Environment.exe");
 
+            Console.WriteLine("output is: " + output);
             Console.WriteLine("press enter to exit");
             Console.ReadLine();
         }

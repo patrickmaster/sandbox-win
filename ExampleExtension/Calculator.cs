@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sandbox.ExampleApp
+namespace ExampleExtension
 {
-    class Program
+    public class Calculator
     {
-        static void Main(string[] args)
+        public static double Add(double a, double b)
         {
-            Console.WriteLine("me is an example app");
+            return a + b;
         }
     }
 }
