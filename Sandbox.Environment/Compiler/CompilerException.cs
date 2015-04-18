@@ -19,6 +19,12 @@ namespace Sandbox.Environment.Compiler
             CompilationErrors = compilationErrors;
         }
 
+        public CompilerException(string message, string compilationErrors)
+            : base(message)
+        {
+            CompilationErrors = compilationErrors;
+        }
+
         public string CompilationErrors { get; protected set; }
     }
 }

@@ -20,11 +20,11 @@ namespace Sandbox.Environment
                 EnvironmentInput environmentInput = GetEnvironmentInput();
                 ICompiler compiler = Manager.GetCompiler(environmentInput.Platform);
                 IExecutor executor = Executor.Manager.GetExecutor(environmentInput.Platform);
-
                 CompilerArgs compilerArgs = GetCompilerArgs(environmentInput);
                 ExecutorArgs executorArgs = GetExecutorArgs(environmentInput);
 
                 compiler.Compile(compilerArgs);
+
                 string result = executor.Run(executorArgs);
 
                 ReturnOutput(result);
@@ -39,7 +39,7 @@ namespace Sandbox.Environment
         {
             return new ExecutorArgs
             {
-                PackageName = environmentInput.PackageName, 
+                PackageName = environmentInput.PackageName,
                 Platform = environmentInput.Platform
             };
         }
@@ -63,7 +63,7 @@ namespace Sandbox.Environment
 
             if (result is Exception)
             {
-                output.Exception = (Exception) result;
+                output.Exception = (Exception)result;
             }
             else
             {

@@ -15,18 +15,6 @@ namespace Sandbox.Environment.Compiler
         protected bool Used;
         protected CompilerArgs Args;
 
-        //protected abstract string TargetDirectory { get; }
-
-        //protected string PackageDirectory
-        //{
-        //    get { return Path.Combine(TargetDirectory, Args.PackageName); }
-        //}
-
-        //protected string TemporaryDirectory
-        //{
-        //    get { return Path.Combine(PackageDirectory, "tmp"); }
-        //}
-
         public virtual void Compile(CompilerArgs args)
         {
             if (Used)
@@ -45,11 +33,6 @@ namespace Sandbox.Environment.Compiler
             }
 
             Args = args;
-
-            if (Directory.Exists(EnvironmentPath.GetPackageDirectory(args.Platform, args.PackageName)))
-            {
-                throw new InvalidOperationException(string.Format("A package with name \"{0}\" already exists", Args.PackageName));
-            }
 
             Used = true;
         }

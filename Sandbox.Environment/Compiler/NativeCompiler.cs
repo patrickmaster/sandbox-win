@@ -39,7 +39,7 @@ namespace Sandbox.Environment.Compiler
             }
             finally
             {
-                RemoveTemporaryDirectory();
+                RemoveTemporaryDirectoryIfExists();
             }
         }
 
@@ -57,9 +57,13 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        private void RemoveTemporaryDirectory()
+        private void RemoveTemporaryDirectoryIfExists()
         {
-            Directory.Delete(EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName), true);
+            string tmpDirectory = EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName);
+            if (Directory.Exists(tmpDirectory))
+            {
+                Directory.Delete(tmpDirectory, true);
+            }
         }
 
         private void MoveToTargetDirectory()
@@ -88,9 +92,6 @@ namespace Sandbox.Environment.Compiler
 
             process.StartInfo = new ProcessStartInfo
             {
-                // DEBUG 
-                //FileName = "cmd.exe",
-                //Arguments = @"/k C:\MinGW\bin\g++.exe " + gccArgs,
                 FileName = GetCompilatorPath(),
                 Arguments = gccArgs,
                 WorkingDirectory = Path.GetDirectoryName(sourceFilePath),
@@ -104,11 +105,11 @@ namespace Sandbox.Environment.Compiler
 
             if (!string.IsNullOrWhiteSpace(compilationResult))
             {
-                ThrowError(compilationResult);
+                ThrowCompilationError(compilationResult);
             }
         }
 
-        private void ThrowError(string compilationResult)
+        private void ThrowCompilationError(string compilationResult)
         {
             throw new CompilerException(compilationResult);
         }
@@ -132,8 +133,21 @@ namespace Sandbox.Environment.Compiler
 
         private void CreatePackageDirectory()
         {
-            Directory.CreateDirectory(EnvironmentPath.GetPackageDirectory(Args.Platform, Args.PackageName));
+            string packagePath = EnvironmentPath.GetPackageDirectory(Args.Platform, Args.PackageName);
+
+            if (Directory.Exists(packagePath))
+            {
+                //ThrowError(string.Format("A package with name \"{0}\" already exists", Args.PackageName));
+                Directory.Delete(packagePath, true);
+            }
+
+            Directory.CreateDirectory(packagePath);
             Directory.CreateDirectory(EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName));
+        }
+
+        private void ThrowError(string message)
+        {
+            throw new CompilerException(message, null);
         }
 
         public override void CompileLibrary(CompilerArgs args)
