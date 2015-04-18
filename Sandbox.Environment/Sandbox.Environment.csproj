@@ -76,7 +76,10 @@
     <Compile Include="Compiler\ICompiler.cs" />
     <Compile Include="Compiler\Manager.cs" />
     <Compile Include="Compiler\NativeCompiler.cs" />
-    <Compile Include="Wrapper\NativeExecutableWrapper.cs" />
+    <Compile Include="Compiler\PythonCompiler.cs" />
+    <Compile Include="Executor\PythonExecutor.cs" />
+    <Compile Include="Wrapper\IWrapper.cs" />
+    <Compile Include="Wrapper\NativeExecutableCodeWrapper.cs" />
     <Compile Include="Configuration\EnvironmentPath.cs" />
     <Compile Include="Executor\Manager.cs" />
     <Compile Include="Executor\NativeExecutor.cs" />
@@ -85,9 +88,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Executor\DotNetExecutor.cs" />
+    <Compile Include="Wrapper\PythonWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

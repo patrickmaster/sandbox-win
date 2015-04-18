@@ -15,6 +15,8 @@ namespace Sandbox.Environment.Compiler
             {
                 case PlatformType.Native:
                     return new NativeCompiler();
+                case PlatformType.Python:
+                    return new PythonCompiler();
             }
 
             throw new NotImplementedException("No compiler implementation for " + type);

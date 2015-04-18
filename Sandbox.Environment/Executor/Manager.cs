@@ -17,6 +17,8 @@ namespace Sandbox.Environment.Executor
                     return new NativeExecutor();
                 case PlatformType.DotNet:
                     return new DotNetExecutor();
+                case PlatformType.Python:
+                    return new PythonExecutor();
             }
 
             throw new NotImplementedException("No executor implementation for " + type);

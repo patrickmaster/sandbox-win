@@ -52,14 +52,23 @@ namespace Sandbox.Sandbox
         {
             EnvironmentInput args = new EnvironmentInput
             {
-                Platform = PlatformType.Native,
-                PackageName = "exampel",
+                //Platform = PlatformType.Native,
+                //PackageName = "exampel",
+                //ReturnType = VariableType.Integer,
+                //Libraries = new List<string>
+                //{
+                //    "mydll"
+                //},
+                //Code = "return add(123,6);"
+
+                Platform = PlatformType.Python,
+                PackageName = "pythonexample",
                 ReturnType = VariableType.Integer,
                 Libraries = new List<string>
                 {
-                    "mydll"
+                    "equation"
                 },
-                Code = "return add(1,6);"
+                Code = "return equation()"
             };
 
             ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(inputFormat);

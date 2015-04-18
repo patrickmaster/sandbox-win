@@ -15,13 +15,17 @@ namespace Sandbox.Environment.Compiler
 {
     class NativeCompiler : Compiler
     {
-        private readonly string _sourceFileName = "source.c";
-
-        private string ExecutableFile
-        {
-            get { return Args.PackageName + ".exe"; }
-        }
+        protected override string SourceExtension { get { return "cpp"; } }
         
+        protected override string LibraryExtension { get { return "dll"; } }
+
+        protected override string ExecutableExtension { get { return "exe"; } }
+
+        protected override IWrapper GetCodeWrapper(CompilerArgs args)
+        {
+            return new NativeExecutableCodeWrapper(args);
+        }
+
         public override void Compile(CompilerArgs args)
         {
             base.Compile(args);
@@ -29,13 +33,18 @@ namespace Sandbox.Environment.Compiler
             try
             {
                 CreatePackageDirectory();
+                CreateTemporaryDirectory();
                 SaveToFile();
                 ImportLibraries();
                 CompileSource(
-                    Path.Combine(EnvironmentPath.GetTemporaryDirectory(args.Platform, args.PackageName), _sourceFileName),
-                    Path.Combine(EnvironmentPath.GetTemporaryDirectory(args.Platform, args.PackageName), ExecutableFile),
-                    args);
+                    Path.Combine(TemporaryDirectory, SourceFile),
+                    Path.Combine(TemporaryDirectory, ExecutableFile));
                 MoveToTargetDirectory();
+            }
+            catch (CompilerException e)
+            {
+                RemovePackageDirectoryIfExists();
+                throw;
             }
             finally
             {
@@ -48,44 +57,47 @@ namespace Sandbox.Environment.Compiler
             foreach (string library in Args.Libraries)
             {
                 File.Copy(
-                    Path.Combine(EnvironmentPath.GetExtensionsDirectory(Args.Platform), library, library + ".dll"),
-                    Path.Combine(EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName), library + ".dll"));
+                    Path.Combine(ExtensionsDirectory, library, library + ".dll"),
+                    Path.Combine(TemporaryDirectory, library + ".dll"));
 
                 File.Copy(
-                    Path.Combine(EnvironmentPath.GetExtensionsDirectory(Args.Platform), library, library + ".h"),
-                    Path.Combine(EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName), library + ".h"));
+                    Path.Combine(ExtensionsDirectory, library, library + ".h"),
+                    Path.Combine(TemporaryDirectory, library + ".h"));
             }
         }
 
-        private void RemoveTemporaryDirectoryIfExists()
+        protected void CreateTemporaryDirectory()
         {
-            string tmpDirectory = EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName);
-            if (Directory.Exists(tmpDirectory))
+            Directory.CreateDirectory(TemporaryDirectory);
+        }
+
+        protected void RemoveTemporaryDirectoryIfExists()
+        {
+            if (Directory.Exists(TemporaryDirectory))
             {
-                Directory.Delete(tmpDirectory, true);
+                Directory.Delete(TemporaryDirectory, true);
             }
         }
 
-        private void MoveToTargetDirectory()
+        protected void MoveToTargetDirectory()
         {
-            File.Move(Path.Combine(EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName), ExecutableFile),
-                Path.Combine(EnvironmentPath.GetPackageDirectory(Args.Platform, Args.PackageName), ExecutableFile));
+            File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
+                Path.Combine(PackageDirectory, ExecutableFile));
 
             foreach (string library in Args.Libraries)
             {
-                File.Move(Path.Combine(EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName), library + ".dll"),
-                    Path.Combine(EnvironmentPath.GetPackageDirectory(Args.Platform, Args.PackageName), library + ".dll"));
+                File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
+                    Path.Combine(PackageDirectory, library + ".dll"));
             }
         }
 
-
-        private void CompileSource(string sourceFilePath, string targetFile, CompilerArgs args)
+        private void CompileSource(string sourceFilePath, string targetFile)
         {
             Process process = new Process();
             string gccArgs = string.Format(@"""{0}"" -o ""{1}"" -L./", sourceFilePath, targetFile);
             string compilationResult;
 
-            foreach (string library in args.Libraries)
+            foreach (string library in Args.Libraries)
             {
                 gccArgs += " -l" + library;
             }
@@ -109,45 +121,21 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        private void ThrowCompilationError(string compilationResult)
+        private void SaveToFile()
         {
-            throw new CompilerException(compilationResult);
+            string filePath = Path.Combine(TemporaryDirectory, SourceFile);
+
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            {
+                IWrapper wrapper = GetCodeWrapper(Args);
+                wrapper.ToStream(stream);
+            }
         }
 
         string GetCompilatorPath()
         {
             string configPath = ConfigurationManager.AppSettings["NativeCompilerPath"];
             return string.IsNullOrEmpty(configPath) ? "g++" : configPath;
-        }
-
-        private void SaveToFile()
-        {
-            string filePath = Path.Combine(EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName), _sourceFileName);
-
-            using (FileStream stream = new FileStream(filePath, FileMode.Create))
-            {
-                NativeExecutableWrapper wrapper = new NativeExecutableWrapper(Args);
-                wrapper.ToStream(stream);
-            }
-        }
-
-        private void CreatePackageDirectory()
-        {
-            string packagePath = EnvironmentPath.GetPackageDirectory(Args.Platform, Args.PackageName);
-
-            if (Directory.Exists(packagePath))
-            {
-                //ThrowError(string.Format("A package with name \"{0}\" already exists", Args.PackageName));
-                Directory.Delete(packagePath, true);
-            }
-
-            Directory.CreateDirectory(packagePath);
-            Directory.CreateDirectory(EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName));
-        }
-
-        private void ThrowError(string message)
-        {
-            throw new CompilerException(message, null);
         }
 
         public override void CompileLibrary(CompilerArgs args)

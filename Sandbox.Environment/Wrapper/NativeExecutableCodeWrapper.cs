@@ -5,11 +5,11 @@ using Sandbox.Environment.Compiler;
 
 namespace Sandbox.Environment.Wrapper
 {
-    class NativeExecutableWrapper
+    class NativeExecutableCodeWrapper : IWrapper
     {
         private CompilerArgs _args;
 
-        public NativeExecutableWrapper(CompilerArgs args)
+        public NativeExecutableCodeWrapper(CompilerArgs args)
         {
             _args = args;
         }
