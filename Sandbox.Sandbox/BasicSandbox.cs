@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using Sandbox.Contracts;
+using Sandbox.Contracts.Code;
 using Sandbox.Contracts.Serialization;
 
 namespace Sandbox.Sandbox
@@ -20,7 +21,7 @@ namespace Sandbox.Sandbox
 
             GenerateOptions(inputPath, inputFormat);
 
-            string args = string.Format("/wait cmd.exe /c \"\"{0}\" -i {1} -f {2} > \"{3}\"\"", executablePath, inputPath, inputFormat, outputPath);
+            string args = string.Format("/wait cmd.exe /c \"\"{0}\" -i \"{1}\" -f {2} -o \"{3}\"\"", executablePath, inputPath, inputFormat, outputPath);
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -43,20 +44,22 @@ namespace Sandbox.Sandbox
 
             clearSandboxieProcess.Start();
             clearSandboxieProcess.WaitForExit();
-            //File.Delete(inputPath);
 
             return GetOutput(outputPath);
         }
 
         private void GenerateOptions(string inputPath, string inputFormat)
         {
-            ExecutorArgs args = new ExecutorArgs
+            EnvironmentInput args = new EnvironmentInput
             {
-                LibraryName = "ExampleExtension.dll",
-                InputArguments = new Dictionary<string, double> { { "a", 15D }, { "b", 13D } },
-                MethodName = "Add",
-                TypeName = "ExampleExtension.Calculator",
-                Type = ExtensionType.DotNet
+                Platform = PlatformType.Native,
+                PackageName = "exampel",
+                ReturnType = VariableType.Integer,
+                Libraries = new List<string>
+                {
+                    "mydll"
+                },
+                Code = "return add(1,6);"
             };
 
             ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(inputFormat);
@@ -71,7 +74,7 @@ namespace Sandbox.Sandbox
 
         private string GetInputPath()
         {
-            return @"sandbox\input.dat";
+            return @"sandbox\env_input.dat";
         }
 
         private string GetOutput(string outputPath)
@@ -84,7 +87,7 @@ namespace Sandbox.Sandbox
             }
 
             File.Delete(outputPath);
-            
+
             return result;
         }
 
@@ -94,7 +97,7 @@ namespace Sandbox.Sandbox
 
             if (string.IsNullOrEmpty(path))
             {
-                path = @"sandbox\output.txt";
+                path = @"sandbox\env_output.txt";
             }
 
             return path;
@@ -109,13 +112,7 @@ namespace Sandbox.Sandbox
                 path = @"C:\Program Files\Sandboxie\Start.exe";
             }
 
-            CheckIfExists(path);
-
             return path;
-        }
-
-        private void CheckIfExists(string path)
-        {
         }
     }
 }

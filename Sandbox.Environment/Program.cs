@@ -1,60 +1,84 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using CommandLine;
 using Sandbox.Contracts;
 using Sandbox.Contracts.Serialization;
+using Sandbox.Environment.Compiler;
 using Sandbox.Environment.Executor;
 using Sandbox.Environment.Interface;
+using Manager = Sandbox.Environment.Compiler.Manager;
 
 namespace Sandbox.Environment
 {
     class Program
     {
-        public static string AssemblyDirectory
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
-        }
-
+        private static Options _options;
         static void Main(string[] args)
         {
-            Options options = GetOptions(args);
-            ExecutorArgs runArgs = GetRunArgs(options);
-            IExecutor executor = GetExecutor(runArgs);
-            
-            object result = executor.Run(runArgs);
-            
-            Console.WriteLine(string.Format("got dll: {0}, method name: {1}, result: {2}", runArgs.LibraryName, runArgs.MethodName, result));
+            try
+            {
+                _options = GetOptions(args);
+                EnvironmentInput environmentInput = GetEnvironmentInput();
+                ICompiler compiler = Manager.GetCompiler(environmentInput.Platform);
+                IExecutor executor = Executor.Manager.GetExecutor(environmentInput.Platform);
+
+                CompilerArgs compilerArgs = GetCompilerArgs(environmentInput);
+                ExecutorArgs executorArgs = GetExecutorArgs(environmentInput);
+
+                compiler.Compile(compilerArgs);
+                string result = executor.Run(executorArgs);
+
+                ReturnOutput(result);
+            }
+            catch (Exception e)
+            {
+                ReturnOutput(e);
+            }
         }
 
-        private static IExecutor GetExecutor(ExecutorArgs runArgs)
+        private static ExecutorArgs GetExecutorArgs(EnvironmentInput environmentInput)
         {
-            switch (runArgs.Type)
+            return new ExecutorArgs
             {
-                case ExtensionType.DotNet:
-                    return new DotNetExecutor();
-                case ExtensionType.Native:
-                    return new NativeExecutor();
+                PackageName = environmentInput.PackageName, 
+                Platform = environmentInput.Platform
+            };
+        }
+
+        private static CompilerArgs GetCompilerArgs(EnvironmentInput environmentInput)
+        {
+            return new CompilerArgs
+            {
+                PackageName = environmentInput.PackageName,
+                Libraries = environmentInput.Libraries,
+                InputArguments = environmentInput.InputArguments,
+                ReturnType = environmentInput.ReturnType,
+                Code = environmentInput.Code,
+                Platform = environmentInput.Platform
+            };
+        }
+
+        private static void ReturnOutput(object result)
+        {
+            EnvironmentOutput output = new EnvironmentOutput();
+
+            if (result is Exception)
+            {
+                output.Exception = (Exception) result;
+            }
+            else
+            {
+                output.Result = result.ToString();
             }
 
-            throw new NotImplementedException();
+            Contracts.Serialization.Manager.GetSerializer(_options.Format).Serialize(output, _options.OutputPath);
         }
-        
-        private static ExecutorArgs GetRunArgs(Options options)
-        {
-            ISerializer serializer = Manager.GetSerializer(options.InputFormat);
 
-            return serializer.Deserialize<ExecutorArgs>(options.InputPath);
+        private static EnvironmentInput GetEnvironmentInput()
+        {
+            ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(_options.Format);
+            EnvironmentInput args = serializer.Deserialize<EnvironmentInput>(_options.InputPath);
+
+            return args;
         }
 
         private static Options GetOptions(string[] args)

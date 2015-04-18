@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Sandbox.Contracts
 {
-    public class OutputArgs
+    public class EnvironmentOutput
     {
+        public Exception Exception { get; set; }
+
+        public string Result { get; set; }
     }
 }

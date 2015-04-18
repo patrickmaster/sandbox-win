@@ -61,6 +61,7 @@
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -69,6 +70,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler\Compiler.cs" />
+    <Compile Include="Compiler\CompilerArgs.cs" />
+    <Compile Include="Compiler\CompilerException.cs" />
+    <Compile Include="Compiler\ICompiler.cs" />
+    <Compile Include="Compiler\Manager.cs" />
+    <Compile Include="Compiler\NativeCompiler.cs" />
+    <Compile Include="Wrapper\NativeExecutableWrapper.cs" />
+    <Compile Include="Configuration\EnvironmentPath.cs" />
+    <Compile Include="Executor\Manager.cs" />
     <Compile Include="Executor\NativeExecutor.cs" />
     <Compile Include="Interface\Options.cs" />
     <Compile Include="Executor\IExecutor.cs" />

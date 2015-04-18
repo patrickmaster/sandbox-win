@@ -4,6 +4,6 @@ namespace Sandbox.Environment.Executor
 {
     interface IExecutor
     {
-        object Run(ExecutorArgs args);
+        string Run(ExecutorArgs args);
     }
 }

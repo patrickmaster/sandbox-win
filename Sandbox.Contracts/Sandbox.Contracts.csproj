@@ -49,8 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\InputArgument.cs" />
+    <Compile Include="Code\VariableType.cs" />
+    <Compile Include="EnvironmentInput.cs" />
     <Compile Include="ExecutorArgs.cs" />
-    <Compile Include="OutputArgs.cs" />
+    <Compile Include="EnvironmentOutput.cs" />
+    <Compile Include="PlatformType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\JsonSerializationProvider.cs" />

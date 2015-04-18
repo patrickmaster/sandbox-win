@@ -13,7 +13,10 @@ namespace Sandbox.Environment.Interface
         [Option('i', "input", Required = true, HelpText = "Input file path")]
         public string InputPath { get; set; }
 
-        [Option('f', "format", Required = true, HelpText = "Input file format, either JSON or XML")]
-        public string InputFormat { get; set; }
+        [Option('o', "output", Required = true, HelpText = "Output file path")]
+        public string OutputPath { get; set; }
+
+        [Option('f', "format", Required = true, HelpText = "Files format, either JSON or XML")]
+        public string Format { get; set; }
     }
 }
