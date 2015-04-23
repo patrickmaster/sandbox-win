@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler\BinaryCompiler.cs" />
     <Compile Include="Compiler\Compiler.cs" />
     <Compile Include="Compiler\CompilerArgs.cs" />
     <Compile Include="Compiler\CompilerException.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Compiler\Manager.cs" />
     <Compile Include="Compiler\NativeCompiler.cs" />
     <Compile Include="Compiler\PythonCompiler.cs" />
+    <Compile Include="Compiler\ScriptCompiler.cs" />
     <Compile Include="Executor\PythonExecutor.cs" />
     <Compile Include="Wrapper\IWrapper.cs" />
     <Compile Include="Wrapper\NativeExecutableCodeWrapper.cs" />

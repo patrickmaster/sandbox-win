@@ -125,5 +125,12 @@ namespace Sandbox.Environment.Compiler
                 wrapper.ToStream(stream);
             }
         }
+
+        protected void ImportLibraryFile(string library, string relativeFilePath)
+        {
+            File.Copy(
+                Path.Combine(ExtensionsDirectory, library, relativeFilePath),
+                Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, relativeFilePath));
+        }
     }
 }

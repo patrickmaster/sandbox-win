@@ -8,9 +8,16 @@ namespace Sandbox.Sandbox
 {
     public static class Manager
     {
-        public static ISandbox GetSandbox()
+        public static ISandbox GetSandbox(bool useSandbox)
         {
-            return new BasicSandbox();
+            if (useSandbox)
+            {
+                return new BasicSandbox();
+            }
+            else
+            {
+                return new NoSandbox(false);
+            }
         }
     }
 }

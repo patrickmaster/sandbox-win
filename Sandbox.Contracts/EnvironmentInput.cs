@@ -20,5 +20,7 @@ namespace Sandbox.Contracts
         public VariableType ReturnType { get; set; }
 
         public string Code { get; set; }
+
+        public bool AttachDebugger { get; set; }
     }
 }

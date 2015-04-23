@@ -6,7 +6,7 @@ using Sandbox.Environment.Wrapper;
 
 namespace Sandbox.Environment.Compiler
 {
-    class PythonCompiler : Compiler
+    class PythonCompiler : ScriptCompiler 
     {
         string MainFile { get { return Args.PackageName + ".py"; } }
 
@@ -25,36 +25,20 @@ namespace Sandbox.Environment.Compiler
             get { return "py"; }
         }
 
-        protected override bool UseTemporaryDirectory
-        {
-            get { return false; }
-        }
-
         protected override IWrapper GetCodeWrapper(CompilerArgs args)
         {
             return new PythonWrapper(args);
         }
 
-        public override void Compile(CompilerArgs args)
-        {
-            base.Compile(args);
-
-            CreatePackageDirectory();
-            SaveToFile();
-            ImportLibraries();
-            ValidateSource();
-        }
-
-        private void ValidateSource()
+        protected override void ValidateSource(string sourceFilePath)
         {
             Process process = new Process();
-            string sourcePath = Path.Combine(PackageDirectory, Args.PackageName + ".py");
-            string pythonArgs = string.Format(@"-m py_compile ""{0}""", sourcePath);
+            string pythonArgs = string.Format(@"-m py_compile ""{0}""", sourceFilePath);
             process.StartInfo = new ProcessStartInfo
             {
                 FileName = GetPythonPath(),
                 Arguments = pythonArgs,
-                WorkingDirectory = Path.GetDirectoryName(sourcePath),
+                WorkingDirectory = Path.GetDirectoryName(sourceFilePath),
                 UseShellExecute = false,
                 RedirectStandardOutput = true
             };
@@ -75,13 +59,11 @@ namespace Sandbox.Environment.Compiler
             return string.IsNullOrEmpty(configPath) ? "python" : configPath;
         }
 
-        private void ImportLibraries()
+        protected override void ImportLibraries()
         {
             foreach (string library in Args.Libraries)
             {
-                File.Copy(
-                    Path.Combine(ExtensionsDirectory, library, library + ".py"),
-                    Path.Combine(PackageDirectory, library + ".py"));
+                ImportLibraryFile(library, library + ".py");
             }
         }
     }

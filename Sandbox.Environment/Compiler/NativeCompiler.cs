@@ -13,7 +13,7 @@ using Sandbox.Environment.Wrapper;
 
 namespace Sandbox.Environment.Compiler
 {
-    class NativeCompiler : Compiler
+    class NativeCompiler : BinaryCompiler
     {
         protected override string SourceExtension { get { return "cpp"; } }
         
@@ -21,57 +21,22 @@ namespace Sandbox.Environment.Compiler
 
         protected override string ExecutableExtension { get { return "exe"; } }
 
-        protected override bool UseTemporaryDirectory
-        {
-            get { return true; }
-        }
 
         protected override IWrapper GetCodeWrapper(CompilerArgs args)
         {
             return new NativeExecutableCodeWrapper(args);
         }
 
-        public override void Compile(CompilerArgs args)
-        {
-            base.Compile(args);
-
-            try
-            {
-                CreatePackageDirectory();
-                CreateTemporaryDirectory();
-                SaveToFile();
-                ImportLibraries();
-                CompileSource(
-                    Path.Combine(TemporaryDirectory, SourceFile),
-                    Path.Combine(TemporaryDirectory, ExecutableFile));
-                MoveToTargetDirectory();
-            }
-            catch (CompilerException e)
-            {
-                RemovePackageDirectoryIfExists();
-                throw;
-            }
-            finally
-            {
-                RemoveTemporaryDirectoryIfExists();
-            }
-        }
-
-        private void ImportLibraries()
+        protected override void ImportLibraries()
         {
             foreach (string library in Args.Libraries)
             {
-                File.Copy(
-                    Path.Combine(ExtensionsDirectory, library, library + ".dll"),
-                    Path.Combine(TemporaryDirectory, library + ".dll"));
-
-                File.Copy(
-                    Path.Combine(ExtensionsDirectory, library, library + ".h"),
-                    Path.Combine(TemporaryDirectory, library + ".h"));
+                ImportLibraryFile(library, library + ".dll");
+                ImportLibraryFile(library, library + ".h");
             }
         }
 
-        protected void MoveToTargetDirectory()
+        protected override void MoveToTargetDirectory()
         {
             File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
                 Path.Combine(PackageDirectory, ExecutableFile));
@@ -83,11 +48,10 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        private void CompileSource(string sourceFilePath, string targetFile)
+        protected override void CompileSource(string sourceFilePath, string targetFile)
         {
             Process process = new Process();
             string gccArgs = string.Format(@"""{0}"" -o ""{1}"" -L./", sourceFilePath, targetFile);
-            string compilationResult;
 
             foreach (string library in Args.Libraries)
             {
@@ -104,7 +68,7 @@ namespace Sandbox.Environment.Compiler
             };
 
             process.Start();
-            compilationResult = process.StandardOutput.ReadToEnd();
+            string compilationResult = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
             if (!string.IsNullOrWhiteSpace(compilationResult))

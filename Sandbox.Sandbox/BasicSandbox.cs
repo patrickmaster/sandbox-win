@@ -9,10 +9,9 @@ using Sandbox.Contracts.Serialization;
 
 namespace Sandbox.Sandbox
 {
-    class BasicSandbox : ISandbox
+    class BasicSandbox : Sandbox
     {
-
-        public string Run(string executablePath)
+        public override string Run(string executablePath)
         {
             Process sandboxieProcess = new Process();
             string inputPath = GetInputPath();
@@ -27,8 +26,9 @@ namespace Sandbox.Sandbox
             {
                 FileName = GetSandboxiePath(),
                 Arguments = args
+                
             };
-
+            
             sandboxieProcess.StartInfo = startInfo;
             sandboxieProcess.Start();
             sandboxieProcess.WaitForExit();
@@ -46,70 +46,6 @@ namespace Sandbox.Sandbox
             clearSandboxieProcess.WaitForExit();
 
             return GetOutput(outputPath);
-        }
-
-        private void GenerateOptions(string inputPath, string inputFormat)
-        {
-            EnvironmentInput args = new EnvironmentInput
-            {
-                //Platform = PlatformType.Native,
-                //PackageName = "exampel",
-                //ReturnType = VariableType.Integer,
-                //Libraries = new List<string>
-                //{
-                //    "mydll"
-                //},
-                //Code = "return add(123,6);"
-
-                Platform = PlatformType.Python,
-                PackageName = "pythonexample",
-                ReturnType = VariableType.Integer,
-                Libraries = new List<string>
-                {
-                    "equation"
-                },
-                Code = "return equation()"
-            };
-
-            ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(inputFormat);
-
-            serializer.Serialize(args, inputPath);
-        }
-
-        private string GetInputFormat()
-        {
-            return "json";
-        }
-
-        private string GetInputPath()
-        {
-            return @"sandbox\env_input.dat";
-        }
-
-        private string GetOutput(string outputPath)
-        {
-            string result;
-            using (FileStream fileStream = new FileStream(outputPath, FileMode.Open))
-            {
-                StreamReader streamReader = new StreamReader(fileStream);
-                result = streamReader.ReadToEnd();
-            }
-
-            File.Delete(outputPath);
-
-            return result;
-        }
-
-        private string GetOutputPath()
-        {
-            string path = ConfigurationManager.AppSettings["OutputPath"];
-
-            if (string.IsNullOrEmpty(path))
-            {
-                path = @"sandbox\env_output.txt";
-            }
-
-            return path;
         }
 
         private string GetSandboxiePath()

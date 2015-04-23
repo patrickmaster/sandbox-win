@@ -17,11 +17,23 @@ namespace Sandbox.Environment
             try
             {
                 _options = GetOptions(args);
+                
                 EnvironmentInput environmentInput = GetEnvironmentInput();
                 ICompiler compiler = Manager.GetCompiler(environmentInput.Platform);
                 IExecutor executor = Executor.Manager.GetExecutor(environmentInput.Platform);
                 CompilerArgs compilerArgs = GetCompilerArgs(environmentInput);
                 ExecutorArgs executorArgs = GetExecutorArgs(environmentInput);
+
+                if (environmentInput.AttachDebugger)
+                {
+                    try
+                    {
+                        System.Diagnostics.Debugger.Launch();
+                    }
+                    catch
+                    {
+                    }
+                }
 
                 compiler.Compile(compilerArgs);
 
