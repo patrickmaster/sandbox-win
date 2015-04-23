@@ -23,6 +23,8 @@ namespace Sandbox.Environment.Compiler
 
         protected abstract string ExecutableExtension { get; }
 
+        protected abstract bool UseTemporaryDirectory { get; }
+
         protected abstract IWrapper GetCodeWrapper(CompilerArgs args);
 
         protected string ExecutableFile
@@ -90,6 +92,19 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
+        protected void CreateTemporaryDirectory()
+        {
+            Directory.CreateDirectory(TemporaryDirectory);
+        }
+
+        protected void RemoveTemporaryDirectoryIfExists()
+        {
+            if (Directory.Exists(TemporaryDirectory))
+            {
+                Directory.Delete(TemporaryDirectory, true);
+            }
+        }
+
         protected void ThrowError(string message)
         {
             throw new CompilerException(message, null);
@@ -98,6 +113,17 @@ namespace Sandbox.Environment.Compiler
         protected void ThrowCompilationError(string compilationResult)
         {
             throw new CompilerException(compilationResult);
+        }
+
+        protected void SaveToFile()
+        {
+            string filePath = Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, SourceFile);
+
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            {
+                IWrapper wrapper = GetCodeWrapper(Args);
+                wrapper.ToStream(stream);
+            }
         }
     }
 }

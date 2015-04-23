@@ -21,6 +21,11 @@ namespace Sandbox.Environment.Compiler
 
         protected override string ExecutableExtension { get { return "exe"; } }
 
+        protected override bool UseTemporaryDirectory
+        {
+            get { return true; }
+        }
+
         protected override IWrapper GetCodeWrapper(CompilerArgs args)
         {
             return new NativeExecutableCodeWrapper(args);
@@ -66,19 +71,6 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        protected void CreateTemporaryDirectory()
-        {
-            Directory.CreateDirectory(TemporaryDirectory);
-        }
-
-        protected void RemoveTemporaryDirectoryIfExists()
-        {
-            if (Directory.Exists(TemporaryDirectory))
-            {
-                Directory.Delete(TemporaryDirectory, true);
-            }
-        }
-
         protected void MoveToTargetDirectory()
         {
             File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
@@ -121,16 +113,6 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        private void SaveToFile()
-        {
-            string filePath = Path.Combine(TemporaryDirectory, SourceFile);
-
-            using (FileStream stream = new FileStream(filePath, FileMode.Create))
-            {
-                IWrapper wrapper = GetCodeWrapper(Args);
-                wrapper.ToStream(stream);
-            }
-        }
 
         string GetCompilatorPath()
         {
