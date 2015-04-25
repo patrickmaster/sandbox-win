@@ -23,6 +23,7 @@ namespace Sandbox.Sandbox
             EnvironmentInput args = new EnvironmentInput
             {
                 AttachDebugger = AttachDebugger,
+                
                 Platform = PlatformType.Native,
                 PackageName = "exampel",
                 ReturnType = VariableType.Integer,
@@ -31,6 +32,7 @@ namespace Sandbox.Sandbox
                     "mydll"
                 },
                 Code = "return add(123,6);"
+                  
 
                 //Platform = PlatformType.Python,
                 //PackageName = "pythonexample",
@@ -40,6 +42,15 @@ namespace Sandbox.Sandbox
                 //    "equation"
                 //},
                 //Code = "return equation()"
+                /*
+                Platform = PlatformType.Java,
+                PackageName = "JavaApp",
+                ReturnType = VariableType.Integer,
+                Libraries = new List<string>
+                {
+                   // "mydll"
+                },
+                Code = "return 1+1;"*/
             };
 
             ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(inputFormat);
