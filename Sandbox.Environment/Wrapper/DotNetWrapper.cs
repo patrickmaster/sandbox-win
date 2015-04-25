@@ -40,7 +40,6 @@ namespace Sandbox.Environment.Wrapper
                 writer.WriteLine(@"{");
                 writer.WriteLine(@"{0} result = resolve();", GetTypeRepresentation(_args.ReturnType));
                 writer.WriteLine(@"Console.WriteLine(result);");
-                writer.WriteLine(@"return 0;");
                 writer.WriteLine(@"}");
 
                 writer.WriteLine(@"}");

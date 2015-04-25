@@ -22,15 +22,15 @@ namespace Sandbox.Sandbox
         {
             EnvironmentInput args = new EnvironmentInput
             {
-                AttachDebugger = AttachDebugger,
-                Platform = PlatformType.Native,
-                PackageName = "exampel",
-                ReturnType = VariableType.Integer,
-                Libraries = new List<string>
-                {
-                    "mydll"
-                },
-                Code = "return add(123,6);"
+                //AttachDebugger = AttachDebugger,
+                //Platform = PlatformType.Native,
+                //PackageName = "exampel",
+                //ReturnType = VariableType.Integer,
+                //Libraries = new List<string>
+                //{
+                //    "mydll"
+                //},
+                //Code = "return add(123,6);"
 
                 //Platform = PlatformType.Python,
                 //PackageName = "pythonexample",
@@ -40,6 +40,12 @@ namespace Sandbox.Sandbox
                 //    "equation"
                 //},
                 //Code = "return equation()"
+
+                Platform = PlatformType.DotNet,
+                PackageName = "DotNetTest",
+                ReturnType = VariableType.Double,
+                Code = "return Math.Sqrt(100);"
+
             };
 
             ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(inputFormat);

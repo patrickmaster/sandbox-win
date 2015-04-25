@@ -32,10 +32,7 @@ namespace Sandbox.Environment.Compiler
 
         protected override void ImportLibraries()
         {
-            foreach (string library in Args.Libraries)
-            {
-                ImportLibraryFile(library, library + ".dll");
-            }
+            //TODO
         }
 
         protected override void MoveToTargetDirectory()
@@ -43,20 +40,20 @@ namespace Sandbox.Environment.Compiler
             File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
                 Path.Combine(PackageDirectory, ExecutableFile));
 
-            foreach (string library in Args.Libraries)
-            {
-                File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
-                    Path.Combine(PackageDirectory, library + ".dll"));
-            }
+            //foreach (string library in Args.Libraries)
+            //{
+            //    File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
+            //        Path.Combine(PackageDirectory, library + ".dll"));
+            //}
         }
 
-        protected void CompileSource(string sourceFilePath, string targetFile)
+        protected override void CompileSource(string sourceFilePath, string targetFile)
         {
             CSharpCodeProvider codeProvider = new CSharpCodeProvider();
             CompilerParameters parameters = new CompilerParameters();
             //parameters.CompilerOptions = "/target:library";
             parameters.GenerateExecutable = true;
-            parameters.OutputAssembly = targetFile + ".exe";
+            parameters.OutputAssembly = targetFile;
             CompilerResults cr = codeProvider.CompileAssemblyFromFile(parameters, sourceFilePath);
             if (cr.Errors.Count > 0)
             {

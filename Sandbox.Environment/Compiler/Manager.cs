@@ -17,6 +17,8 @@ namespace Sandbox.Environment.Compiler
                     return new NativeCompiler();
                 case PlatformType.Python:
                     return new PythonCompiler();
+                case PlatformType.DotNet:
+                    return new DotNetCompiler();
             }
 
             throw new NotImplementedException("No compiler implementation for " + type);
