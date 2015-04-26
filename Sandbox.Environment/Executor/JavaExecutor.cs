@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using Sandbox.Contracts;
 using Sandbox.Environment.Configuration;
+using System.Threading;
 
 namespace Sandbox.Environment.Executor
 {
@@ -13,15 +14,16 @@ namespace Sandbox.Environment.Executor
         {
             string result;
             Process process = new Process();
-            string executablePath = Path.Combine(EnvironmentPath.GetPackageDirectory(args.Platform, args.PackageName), args.PackageName);
+            string executablePath = EnvironmentPath.GetPackageDirectory(args.Platform, args.PackageName);
 
             process.StartInfo = new ProcessStartInfo
             {
                 FileName = "java",
-                Arguments = string.Format("-cp . {0}", args.PackageName), //"\"" + executablePath + "\"",
+                Arguments = string.Format("-cp .;{0}/*; {1}",executablePath, args.PackageName), //"\"" + executablePath + "\"",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 WorkingDirectory = EnvironmentPath.GetPackageDirectory(args.Platform, args.PackageName)
+               
             };
 
             process.Start();

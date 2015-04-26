@@ -48,9 +48,9 @@ namespace Sandbox.Sandbox
                 ReturnType = VariableType.Integer,
                 Libraries = new List<string>
                 {
-                   // "mydll"
+                   "Simple"
                 },
-                Code = "return 1+1;"
+                Code = "return Simple.add(11,3);"
             };
 
             ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(inputFormat);

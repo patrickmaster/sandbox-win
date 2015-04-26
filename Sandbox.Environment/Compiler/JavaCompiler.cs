@@ -17,7 +17,7 @@ namespace Sandbox.Environment.Compiler
     {
         protected override string SourceExtension { get { return "java"; } }
 
-        protected override string LibraryExtension { get { return "dll"; } }
+        protected override string LibraryExtension { get { return "jar"; } }
 
         protected override string ExecutableExtension { get { return "class"; } }
 
@@ -29,38 +29,32 @@ namespace Sandbox.Environment.Compiler
 
         protected override void ImportLibraries()
         {
-            /*
+            
             foreach (string library in Args.Libraries)
             {
-                ImportLibraryFile(library, library + ".dll");
-                ImportLibraryFile(library, library + ".h");
+                ImportLibraryFile(library, library + ".jar");
             }
-             */
+             
         }
 
         protected override void MoveToTargetDirectory()
         {
             File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
                 Path.Combine(PackageDirectory, ExecutableFile));
-            /*
+            
             foreach (string library in Args.Libraries)
             {
-                File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
-                    Path.Combine(PackageDirectory, library + ".dll"));
+                File.Move(Path.Combine(TemporaryDirectory, library + ".jar"),
+                    Path.Combine(PackageDirectory, library + ".jar"));
             }
-             */
+             
         }
 
         protected override void CompileSource(string sourceFilePath, string targetFilePath)
         {
             Process process = new Process();
-            string javaArgs = string.Format(@"""{0}""", sourceFilePath);
-            /*
-            foreach (string library in Args.Libraries)
-            {
-                javaArgs += " -l" + library;
-            }
-            */
+            string javaArgs = string.Format(@"-cp .;{0}\*; {1}", TemporaryDirectory, sourceFilePath);
+          
             process.StartInfo = new ProcessStartInfo
             {
                 FileName = GetCompilatorPath(),

@@ -24,12 +24,6 @@ namespace Sandbox.Environment.Wrapper
             using (TextWriter writer = new StreamWriter(stream))
             {
                 writer.WriteLine(@"class JavaApp{");
-    /*
-                foreach (string library in _args.Libraries)
-                {
-                    writer.WriteLine(@"#include ""{0}.h""", library);
-                }
-    */
                 writer.WriteLine(@"public static  {0} resolve()", GetTypeRepresentation(_args.ReturnType));
                 writer.WriteLine(@"{");
                 writer.WriteLine(_args.Code);

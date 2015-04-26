@@ -16,7 +16,7 @@ namespace Sandbox.Sandbox
             }
             else
             {
-                return new NoSandbox(true);
+                return new NoSandbox(false);
             }
         }
     }
