@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sandbox.Contracts;
 
 namespace Sandbox.Sandbox
 {
@@ -14,21 +15,21 @@ namespace Sandbox.Sandbox
             AttachDebugger = attachDebugger;
         }
 
-        public override string Run(string executablePath)
+        public override EnvironmentOutput Run(EnvironmentInput input)
         {
             Process environmentProcess = new Process();
-
+            string environmentPath = GetEnvironmentExecutable();
             string inputPath = GetInputPath();
-            string inputFormat = GetInputFormat();
+            string format = GetInputFormat();
             string outputPath = GetOutputPath();
 
-            GenerateOptions(inputPath, inputFormat);
+            GenerateOptions(inputPath, format, input);
 
-            string args = string.Format("-i \"{0}\" -f {1} -o \"{2}\"", inputPath, inputFormat, outputPath);
+            string args = string.Format("-i \"{0}\" -f {1} -o \"{2}\"", inputPath, format, outputPath);
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = executablePath,
+                FileName = environmentPath,
                 Arguments = args
             };
 
@@ -36,7 +37,7 @@ namespace Sandbox.Sandbox
             environmentProcess.Start();
             environmentProcess.WaitForExit();
 
-            return GetOutput(outputPath);
+            return GetOutput(outputPath, format);
         }
     }
 }

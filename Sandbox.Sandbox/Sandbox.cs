@@ -16,59 +16,38 @@ namespace Sandbox.Sandbox
     {
         protected bool AttachDebugger;
 
-        public abstract string Run(string executablePath);
+        public abstract EnvironmentOutput Run(EnvironmentInput input);
 
-        protected void GenerateOptions(string inputPath, string inputFormat)
+        protected void GenerateOptions(string inputPath, string inputFormat, EnvironmentInput input)
         {
-            EnvironmentInput args = new EnvironmentInput
-            {
-                AttachDebugger = AttachDebugger,
-                //Platform = PlatformType.Native,
-                //PackageName = "exampel",
-                //ReturnType = VariableType.Integer,
-                //Libraries = new List<string>
-                //{
-                //    "mydll"
-                //},
-                //Code = "return add(123,6);"
-
-                //Platform = PlatformType.Python,
-                //PackageName = "pythonexample",
-                //ReturnType = VariableType.Integer,
-                //Libraries = new List<string>
-                //{
-                //    "equation"
-                //},
-                //Code = "return equation()"
-
-                Platform = PlatformType.DotNet,
-                PackageName = "DotNetTest",
-                ReturnType = VariableType.Double,
-                Libraries = new List<string>
-                {
-                    "exampleDll"
-                },
-                Code = "exampleDllClass A = new exampleDllClass(); return A.Equation();"
-
-            };
 
             ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(inputFormat);
 
-            serializer.Serialize(args, inputPath);
+            serializer.Serialize(input, inputPath);
         }
 
-        protected string GetOutput(string outputPath)
+        protected string GetEnvironmentExecutable()
+        {
+            string path = ConfigurationManager.AppSettings["EnvironmentPath"];
+
+            if (string.IsNullOrEmpty(path))
+            {
+                path = @"sandbox\Sandbox.Environment.exe";
+            }
+
+            return path;
+        }
+
+        protected EnvironmentOutput GetOutput(string outputPath, string format)
         {
             string result;
-            using (FileStream fileStream = new FileStream(outputPath, FileMode.Open))
-            {
-                StreamReader streamReader = new StreamReader(fileStream);
-                result = streamReader.ReadToEnd();
-            }
+
+            ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(format);
+            EnvironmentOutput output = serializer.Deserialize<EnvironmentOutput>(outputPath);
 
             File.Delete(outputPath);
 
-            return result;
+            return output;
         }
 
         protected string GetOutputPath()
@@ -90,7 +69,14 @@ namespace Sandbox.Sandbox
 
         protected string GetInputPath()
         {
-            return @"sandbox\env_input.dat";
+            string path = ConfigurationManager.AppSettings["InputPath"];
+
+            if (string.IsNullOrEmpty(path))
+            {
+                path = @"sandbox\env_input.dat";
+            }
+
+            return path;
         }
 
     }

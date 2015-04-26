@@ -11,16 +11,17 @@ namespace Sandbox.Sandbox
 {
     class BasicSandbox : Sandbox
     {
-        public override string Run(string executablePath)
+        public override EnvironmentOutput Run(EnvironmentInput input)
         {
+            string environmentExecutablePath = GetEnvironmentExecutable();
             Process sandboxieProcess = new Process();
             string inputPath = GetInputPath();
-            string inputFormat = GetInputFormat();
+            string format = GetInputFormat();
             string outputPath = GetOutputPath();
 
-            GenerateOptions(inputPath, inputFormat);
+            GenerateOptions(inputPath, format, input);
 
-            string args = string.Format("/wait cmd.exe /c \"\"{0}\" -i \"{1}\" -f {2} -o \"{3}\"\"", executablePath, inputPath, inputFormat, outputPath);
+            string args = string.Format("/wait cmd.exe /c \"\"{0}\" -i \"{1}\" -f {2} -o \"{3}\"\"", environmentExecutablePath, inputPath, format, outputPath);
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -45,7 +46,7 @@ namespace Sandbox.Sandbox
             clearSandboxieProcess.Start();
             clearSandboxieProcess.WaitForExit();
 
-            return GetOutput(outputPath);
+            return GetOutput(outputPath, format);
         }
 
         private string GetSandboxiePath()
