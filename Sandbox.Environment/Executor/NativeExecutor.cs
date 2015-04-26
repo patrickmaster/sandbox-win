@@ -26,7 +26,7 @@ namespace Sandbox.Environment.Executor
             result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
-            return result;
+            return result.Trim();
         }
     }
 }
