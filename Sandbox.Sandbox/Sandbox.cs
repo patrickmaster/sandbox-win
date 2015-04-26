@@ -44,7 +44,11 @@ namespace Sandbox.Sandbox
                 Platform = PlatformType.DotNet,
                 PackageName = "DotNetTest",
                 ReturnType = VariableType.Double,
-                Code = "return Math.Sqrt(100);"
+                Libraries = new List<string>
+                {
+                    "exampleDll"
+                },
+                Code = "exampleDllClass A = new exampleDllClass(); return A.Equation();"
 
             };
 
