@@ -54,7 +54,7 @@ namespace Sandbox.Environment.Compiler
         protected override void CompileSource(string sourceFilePath, string targetFilePath)
         {
             Process process = new Process();
-            string javaArgs = string.Format(@"""javac {0}", sourceFilePath);
+            string javaArgs = string.Format(@"javac ""{0}""", sourceFilePath);
             /*
             foreach (string library in Args.Libraries)
             {
