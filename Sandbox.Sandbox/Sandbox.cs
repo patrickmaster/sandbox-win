@@ -22,7 +22,7 @@ namespace Sandbox.Sandbox
         {
             EnvironmentInput args = new EnvironmentInput
             {
-                //AttachDebugger = AttachDebugger,
+                AttachDebugger = AttachDebugger,
                 //Platform = PlatformType.Native,
                 //PackageName = "exampel",
                 //ReturnType = VariableType.Integer,
