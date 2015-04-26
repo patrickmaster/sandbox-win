@@ -18,7 +18,7 @@ namespace Sandbox.Environment.Executor
 
             process.StartInfo = new ProcessStartInfo
             {
-                FileName = "java",
+                FileName = ConfigurationManager.AppSettings["JavaExecutorPath"],
                 Arguments = string.Format("-cp .;{0}/*; {1}",executablePath, args.PackageName), //"\"" + executablePath + "\"",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,

@@ -50,7 +50,7 @@ namespace Sandbox.Sandbox
                 {
                    "Simple"
                 },
-                Code = "return Simple.add(11,3);"
+                Code = "return Simple.add(11,9);"
             };
 
             ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(inputFormat);
