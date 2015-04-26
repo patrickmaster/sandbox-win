@@ -26,7 +26,12 @@ namespace Sandbox.Environment.Wrapper
                 writer.WriteLine(@"using System.Collections.Generic;");
                 writer.WriteLine(@"using System.Text;");
                 writer.WriteLine(@"using System.Threading.Tasks;");
-                
+
+                foreach (string library in _args.Libraries)
+                {
+                    writer.WriteLine(@"using {0};", library);
+                }
+
                 writer.WriteLine(@"namespace {0}", _args.PackageName);
                 writer.WriteLine(@"{");
                 writer.WriteLine(@"class Program");
