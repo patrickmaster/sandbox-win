@@ -53,7 +53,7 @@ namespace Sandbox.Environment.Compiler
         protected override void CompileSource(string sourceFilePath, string targetFilePath)
         {
             Process process = new Process();
-            string javaArgs = string.Format(@"-cp .;{0}\*; {1}", TemporaryDirectory, sourceFilePath);
+            string javaArgs = string.Format(@"-cp .;""{0}\*""; ""{1}""", TemporaryDirectory, sourceFilePath);
           
             process.StartInfo = new ProcessStartInfo
             {

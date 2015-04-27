@@ -19,11 +19,10 @@ namespace Sandbox.Environment.Executor
             process.StartInfo = new ProcessStartInfo
             {
                 FileName = ConfigurationManager.AppSettings["JavaExecutorPath"],
-                Arguments = string.Format("-cp .;{0}/*; {1}",executablePath, args.PackageName), //"\"" + executablePath + "\"",
+                Arguments = string.Format(@"-cp .;""{0}/*""; ""{1}""", executablePath, args.PackageName),
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 WorkingDirectory = EnvironmentPath.GetPackageDirectory(args.Platform, args.PackageName)
-               
             };
 
             process.Start();
