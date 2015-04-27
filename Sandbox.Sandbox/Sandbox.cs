@@ -40,15 +40,24 @@ namespace Sandbox.Sandbox
                 //    "equation"
                 //},
                 //Code = "return equation()"
-
-                Platform = PlatformType.DotNet,
-                PackageName = "DotNetTest",
-                ReturnType = VariableType.Double,
+                
+                Platform = PlatformType.Java,
+                PackageName = "JavaApp",
+                ReturnType = VariableType.Integer,
                 Libraries = new List<string>
                 {
-                    "exampleDll"
+                   "Simple"
                 },
-                Code = "exampleDllClass A = new exampleDllClass(); return A.Equation();"
+                Code = "return Simple.add(11,9);"
+
+                //Platform = PlatformType.DotNet,
+                //PackageName = "DotNetTest",
+                //ReturnType = VariableType.Double,
+                //Libraries = new List<string>
+                //{
+                //    "exampleDll"
+                //},
+                //Code = "exampleDllClass A = new exampleDllClass(); return A.Equation();"
 
             };
 
