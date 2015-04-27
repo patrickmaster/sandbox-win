@@ -27,7 +27,7 @@ namespace Sandbox.Sandbox
         }
 
         protected string GetEnvironmentExecutable()
-        {
+                {
             string path = ConfigurationManager.AppSettings["EnvironmentPath"];
 
             if (string.IsNullOrEmpty(path))
