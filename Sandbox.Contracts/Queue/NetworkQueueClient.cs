@@ -23,7 +23,7 @@ namespace Sandbox.Contracts.Queue
             throw new NotImplementedException();
         }
 
-        public event EventHandler<T> ItemEnqueued;
+        public event EventHandler<ItemEnqueuedEventArgs<T>> ItemEnqueued;
 
         public void Connect(string host, int port)
         {

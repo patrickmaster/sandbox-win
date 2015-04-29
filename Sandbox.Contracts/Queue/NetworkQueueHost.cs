@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +22,8 @@ namespace Sandbox.Contracts.Queue
         private bool _used;
 
         private Thread _receivingThread;
+
+        private ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
 
         private void Bind()
         {
@@ -50,7 +54,19 @@ namespace Sandbox.Contracts.Queue
                 stream.Read(contentBytes, 4, contentLength);
                 MemoryStream objectStream = new MemoryStream(contentLength);
 
-                // TODO 
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                T item = (T) formatter.Deserialize(objectStream);
+
+                _queue.Enqueue(item);
+
+                EventHandler<ItemEnqueuedEventArgs<T>> handler = ItemEnqueued;
+
+                if (handler != null)
+                {
+                    
+                    handler(this, new ItemEnqueuedEventArgs<T>(item));
+                }
             } 
         }
 
@@ -64,7 +80,7 @@ namespace Sandbox.Contracts.Queue
             throw new NotImplementedException();
         }
 
-        public event EventHandler<T> ItemEnqueued;
+        public event EventHandler<ItemEnqueuedEventArgs<T>> ItemEnqueued;
 
         public void Create(string host, int port)
         {

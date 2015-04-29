@@ -54,6 +54,7 @@
     <Compile Include="Queue\IQueueClient.cs" />
     <Compile Include="Queue\IQueue.cs" />
     <Compile Include="Queue\IQueueHost.cs" />
+    <Compile Include="Queue\Model\ItemEnqueuedEventArgs.cs" />
     <Compile Include="Queue\NetworkQueueClient.cs" />
     <Compile Include="Queue\Model\NetworkQueueDto.cs" />
     <Compile Include="Queue\NetworkQueueHost.cs" />

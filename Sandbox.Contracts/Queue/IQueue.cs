@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sandbox.Contracts.Queue;
 
 namespace Sandbox.Contracts.Queue
 {
@@ -12,6 +13,6 @@ namespace Sandbox.Contracts.Queue
 
         T Dequeue();
 
-        event EventHandler<T> ItemEnqueued;
+        event EventHandler<ItemEnqueuedEventArgs<T>> ItemEnqueued;
     }
 }

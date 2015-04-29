@@ -1,4 +1,5 @@
-﻿namespace Sandbox.Contracts.Queue.Model
+﻿ // ReSharper disable once CheckNamespace
+namespace Sandbox.Contracts.Queue
 {
     class NetworkQueueDto<T>
     {
