@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Sandbox.Contracts;
 using Sandbox.Contracts.Code;
+using Sandbox.Contracts.Types;
 
 namespace Sandbox.WebApi.Models
 {

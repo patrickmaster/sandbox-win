@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using Sandbox.Contracts;
+using Sandbox.Contracts.Types;
 using Sandbox.Environment.Configuration;
 
 namespace Sandbox.Environment.Executor

@@ -2,6 +2,7 @@
 using CommandLine;
 using Sandbox.Contracts;
 using Sandbox.Contracts.Serialization;
+using Sandbox.Contracts.Types;
 using Sandbox.Environment.Compiler;
 using Sandbox.Environment.Executor;
 using Sandbox.Environment.Interface;

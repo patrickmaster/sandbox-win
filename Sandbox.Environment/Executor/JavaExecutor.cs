@@ -5,6 +5,7 @@ using System.IO;
 using Sandbox.Contracts;
 using Sandbox.Environment.Configuration;
 using System.Threading;
+using Sandbox.Contracts.Types;
 
 namespace Sandbox.Environment.Executor
 {

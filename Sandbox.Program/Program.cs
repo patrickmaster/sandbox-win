@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Sandbox.Contracts;
 using Sandbox.Contracts.Code;
+using Sandbox.Contracts.Types;
 using Sandbox.Sandbox;
 
 namespace Sandbox.Program

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using Sandbox.Contracts;
+using Sandbox.Contracts.Types;
 
 namespace Sandbox.Environment.Configuration
 {

@@ -1,4 +1,4 @@
-﻿namespace Sandbox.Contracts
+﻿namespace Sandbox.Contracts.Types
 {
     public class ExecutorArgs
     {

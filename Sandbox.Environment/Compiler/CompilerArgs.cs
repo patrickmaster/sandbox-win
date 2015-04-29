@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sandbox.Contracts;
 using Sandbox.Contracts.Code;
+using Sandbox.Contracts.Types;
 
 namespace Sandbox.Environment.Compiler
 {

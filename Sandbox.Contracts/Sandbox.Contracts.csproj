@@ -51,10 +51,17 @@
   <ItemGroup>
     <Compile Include="Code\InputArgument.cs" />
     <Compile Include="Code\VariableType.cs" />
-    <Compile Include="EnvironmentInput.cs" />
-    <Compile Include="ExecutorArgs.cs" />
-    <Compile Include="EnvironmentOutput.cs" />
-    <Compile Include="PlatformType.cs" />
+    <Compile Include="Queue\IQueueClient.cs" />
+    <Compile Include="Queue\IQueue.cs" />
+    <Compile Include="Queue\IQueueHost.cs" />
+    <Compile Include="Queue\NetworkQueueClient.cs" />
+    <Compile Include="Queue\Model\NetworkQueueDto.cs" />
+    <Compile Include="Queue\NetworkQueueHost.cs" />
+    <Compile Include="Queue\QueueManager.cs" />
+    <Compile Include="Types\EnvironmentInput.cs" />
+    <Compile Include="Types\ExecutorArgs.cs" />
+    <Compile Include="Types\EnvironmentOutput.cs" />
+    <Compile Include="Types\PlatformType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\JsonSerializationProvider.cs" />

@@ -1,4 +1,5 @@
 ﻿using Sandbox.Contracts;
+using Sandbox.Contracts.Types;
 
 namespace Sandbox.Environment.Executor
 {

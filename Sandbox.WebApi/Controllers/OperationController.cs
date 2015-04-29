@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
 using Sandbox.Contracts;
+using Sandbox.Contracts.Types;
 using Sandbox.Sandbox;
 using Sandbox.WebApi.Models;
 

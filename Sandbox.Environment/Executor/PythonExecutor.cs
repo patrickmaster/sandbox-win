@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sandbox.Contracts;
+using Sandbox.Contracts.Types;
 using Sandbox.Environment.Configuration;
 
 namespace Sandbox.Environment.Executor
