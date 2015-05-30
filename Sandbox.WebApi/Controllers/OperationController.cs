@@ -22,6 +22,20 @@ namespace Sandbox.WebApi.Controllers
             Mapper.CreateMap<EnvironmentOutput, Output>();
         }
 
+        public EnvironmentOutput Get(Guid id)
+        {
+            EnvironmentOutput output;
+
+            if (_queue.TryGet(id, out output))
+            {
+                return output;
+            }
+            else
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+        }
+
         public Guid Post(Input input)
         {
             EnvironmentInput envInput = Mapper.Map<EnvironmentInput>(input);

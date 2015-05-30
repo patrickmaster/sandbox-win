@@ -56,8 +56,6 @@
     <Compile Include="Types\EnvironmentInput.cs" />
     <Compile Include="Types\ExecutorArgs.cs" />
     <Compile Include="Types\EnvironmentOutput.cs" />
-    <Compile Include="Types\OperationRequest.cs" />
-    <Compile Include="Types\OperationResult.cs" />
     <Compile Include="Types\PlatformType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\ISerializer.cs" />

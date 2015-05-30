@@ -14,7 +14,7 @@ namespace Sandbox.Contracts.DataLayer
         /// of the queue
         /// </summary>
         /// <returns>A collection of operation requests</returns>
-        IEnumerable<OperationRequest> GetUnresolved();
+        IEnumerable<EnvironmentInput> GetUnresolved();
 
         /// <summary>
         /// Gets first <paramref name="count"/> unresolved operation requests
@@ -22,7 +22,7 @@ namespace Sandbox.Contracts.DataLayer
         /// </summary>
         /// <param name="count">The number of requests to get</param>
         /// <returns>A collection of operation requests</returns>
-        IEnumerable<OperationRequest> GetUnresolved(int count);
+        IEnumerable<EnvironmentOutput> GetUnresolved(int count);
 
         /// <summary>
         /// Puts the result of the operation to the request
@@ -30,6 +30,6 @@ namespace Sandbox.Contracts.DataLayer
         /// </summary>
         /// <param name="request">Processed operation request</param>
         /// <param name="result">Operation result</param>
-        void Resolve(OperationRequest request, OperationResult result);
+        void Resolve(EnvironmentInput request, EnvironmentOutput result);
     }
 }
