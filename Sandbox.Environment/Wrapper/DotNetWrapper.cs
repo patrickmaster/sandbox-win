@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Sandbox.Contracts.Code;
 using Sandbox.Environment.Compiler;
 using System.IO;
+using Sandbox.Contracts.Types.Code;
 
 namespace Sandbox.Environment.Wrapper
 {

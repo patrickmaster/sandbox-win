@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Sandbox.Contracts.Code;
+using Sandbox.Contracts.Types.Code;
 using Sandbox.Environment.Compiler;
 
 namespace Sandbox.Environment.Wrapper

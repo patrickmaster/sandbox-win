@@ -110,10 +110,6 @@
       <Project>{c95b18c9-d774-4d06-8515-e260c26024ab}</Project>
       <Name>Sandbox.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sandbox.Sandbox\Sandbox.Sandbox.csproj">
-      <Project>{8d4c70d9-a2e0-4e06-a58c-a4383de3c678}</Project>
-      <Name>Sandbox.Sandbox</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

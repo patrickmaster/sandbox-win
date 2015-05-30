@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sandbox.Contracts.Queue
+namespace Sandbox.Contracts.Types
 {
-    public interface IQueueHost<T> : IQueue<T>
+    public class OperationRequest
     {
-        void Create(string host, int port);
     }
 }

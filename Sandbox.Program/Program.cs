@@ -6,9 +6,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Sandbox.Contracts;
-using Sandbox.Contracts.Code;
 using Sandbox.Contracts.Types;
-using Sandbox.Sandbox;
+using Sandbox.Contracts.Types.Code;
 
 namespace Sandbox.Program
 {

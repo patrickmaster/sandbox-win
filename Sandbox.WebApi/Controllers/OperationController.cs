@@ -6,15 +6,15 @@ using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
 using Sandbox.Contracts;
+using Sandbox.Contracts.DataLayer;
 using Sandbox.Contracts.Types;
-using Sandbox.Sandbox;
 using Sandbox.WebApi.Models;
 
 namespace Sandbox.WebApi.Controllers
 {
     public class OperationController : BaseController
     {
-        private ISandbox _sandbox = Manager.GetSandbox(false);
+        private IOperationsQueue _queue;
 
         static OperationController()
         {
@@ -22,7 +22,7 @@ namespace Sandbox.WebApi.Controllers
             Mapper.CreateMap<EnvironmentOutput, Output>();
         }
 
-        public Output Post(Input input)
+        public Guid Post(Input input)
         {
             EnvironmentInput envInput = Mapper.Map<EnvironmentInput>(input);
             
@@ -31,9 +31,9 @@ namespace Sandbox.WebApi.Controllers
                 envInput.PackageName = "test";
             }
 
-            EnvironmentOutput output = _sandbox.Run(envInput);
+            Guid id = _queue.Enqueue(envInput);
 
-            return Mapper.Map<Output>(output);
+            return id;
         }
     }
 }

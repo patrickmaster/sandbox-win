@@ -1,4 +1,4 @@
-﻿namespace Sandbox.Contracts.Code
+﻿namespace Sandbox.Contracts.Types.Code
 {
     public enum VariableType
     {

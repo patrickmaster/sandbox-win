@@ -24,18 +24,7 @@ namespace Sandbox.Environment
                 IExecutor executor = Executor.Manager.GetExecutor(environmentInput.Platform);
                 CompilerArgs compilerArgs = GetCompilerArgs(environmentInput);
                 ExecutorArgs executorArgs = GetExecutorArgs(environmentInput);
-
-                if (environmentInput.AttachDebugger)
-                {
-                    try
-                    {
-                        System.Diagnostics.Debugger.Launch();
-                    }
-                    catch
-                    {
-                    }
-                }
-
+                
                 compiler.Compile(compilerArgs);
 
                 string result = executor.Run(executorArgs);

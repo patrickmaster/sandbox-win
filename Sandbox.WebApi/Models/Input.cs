@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Sandbox.Contracts;
-using Sandbox.Contracts.Code;
 using Sandbox.Contracts.Types;
+using Sandbox.Contracts.Types.Code;
 
 namespace Sandbox.WebApi.Models
 {

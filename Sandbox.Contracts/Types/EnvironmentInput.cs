@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Sandbox.Contracts.Code;
+using Sandbox.Contracts.Types.Code;
 
 namespace Sandbox.Contracts.Types
 {
@@ -16,7 +16,5 @@ namespace Sandbox.Contracts.Types
         public VariableType ReturnType { get; set; }
 
         public string Code { get; set; }
-
-        public bool AttachDebugger { get; set; }
     }
 }
