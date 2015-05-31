@@ -35,7 +35,7 @@ namespace Sandbox.WebApi.Controllers
         {
             Guid id = _queue.Enqueue(input);
 
-            return Request.CreateResponse(new { Id = id });
+            return Request.CreateResponse(new { ID = id });
         }
     }
 }

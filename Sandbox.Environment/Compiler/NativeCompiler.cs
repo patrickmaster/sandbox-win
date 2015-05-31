@@ -79,12 +79,7 @@ namespace Sandbox.Environment.Compiler
             };
 
             process.Start();
-            string compilationResult = process.StandardError.ReadToEnd();
-            if (string.IsNullOrWhiteSpace(compilationResult))
-            {
-                compilationResult = process.StandardOutput.ReadToEnd();
-            }
-            
+            string compilationResult = GetCompilationResult(process);
             process.WaitForExit();
 
             if (!string.IsNullOrWhiteSpace(compilationResult))

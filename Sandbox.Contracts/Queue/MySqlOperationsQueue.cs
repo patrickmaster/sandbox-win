@@ -1,8 +1,14 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Polenter.Serialization;
 using Sandbox.Contracts.MySql;
 using Sandbox.Contracts.Types;
+using Sandbox.Contracts.Types.Environment;
 
 namespace Sandbox.Contracts.Queue
 {
@@ -34,7 +40,13 @@ namespace Sandbox.Contracts.Queue
                 {
                     if (task.Resolved)
                     {
-                        output = JsonConvert.DeserializeObject<Output>(task.Output);
+                        EnvironmentOutput environmentOutput = JsonConvert.DeserializeObject<EnvironmentOutput>(task.Output);
+                        output = new Output
+                        {
+                            Result = environmentOutput.Result,
+                            Error = environmentOutput.Exception != null ? environmentOutput.Exception.Message : null
+                        };
+
                         return OperationStatus.Resolved;
                     }
                     else

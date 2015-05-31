@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Xml.Serialization;
 using AutoMapper;
 using Newtonsoft.Json;
 using Sandbox.Contracts.MySql;
@@ -50,12 +53,10 @@ namespace Sandbox.Contracts.Queue
 
         public void Resolve(EnvironmentInput request, EnvironmentOutput result)
         {
-            Output output = Mapper.Map<Output>(result);
-
             Task task = _context.Tasks
                 .FirstOrDefault(x => x.SyncGuid == request.SyncGuid);
 
-            task.Output = JsonConvert.SerializeObject(output);
+            task.Output = JsonConvert.SerializeObject(result);
             task.Resolved = true;
             _context.SaveChanges();
         }

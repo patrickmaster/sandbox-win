@@ -8,11 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Sandbox.Contracts;
 using Sandbox.Contracts.Types;
+using Sandbox.Environment.Compiler;
 using Sandbox.Environment.Configuration;
 
 namespace Sandbox.Environment.Executor
 {
-    class PythonExecutor : IExecutor
+    class PythonExecutor : Executor, IExecutor
     {
         public string Run(ExecutorArgs args)
         {
@@ -25,14 +26,13 @@ namespace Sandbox.Environment.Executor
                 Arguments = "\"" + scriptPath + "\"",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
+                RedirectStandardError = true,
                 WorkingDirectory = Path.GetDirectoryName(scriptPath)
             };
 
             process.Start();
-            string result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
-
-            return result.Trim();
+            return ReadExecutionResult(process);
         }
 
         private string GetPythonPath()
