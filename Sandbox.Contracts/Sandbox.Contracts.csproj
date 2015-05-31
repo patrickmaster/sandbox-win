@@ -81,7 +81,7 @@
     <Compile Include="Types\Environment\EnvironmentInput.cs" />
     <Compile Include="Types\Environment\EnvironmentOutput.cs" />
     <Compile Include="Types\Input.cs" />
-    <Compile Include="Types\Library.cs" />
+    <Compile Include="MySql\Library.cs" />
     <Compile Include="Types\Output.cs" />
     <Compile Include="Queue\IOperationsDequeue.cs" />
     <Compile Include="Queue\IOperationsQueue.cs" />

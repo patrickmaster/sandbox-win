@@ -36,6 +36,15 @@ namespace Sandbox.Contracts.MySql
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Task>()
+                        .HasMany<Library>(t => t.Libraries)
+                        .WithMany(l => l.Tasks)
+                        .Map(tl =>
+                        {
+                            tl.MapLeftKey("TaskID");
+                            tl.MapRightKey("LibraryID");
+                            tl.ToTable("TasksLibaries");
+                        });
         }
     }
 }

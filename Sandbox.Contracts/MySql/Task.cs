@@ -9,10 +9,12 @@ using Sandbox.Contracts.Types;
 
 namespace Sandbox.Contracts.MySql
 {
-    class Task
+    public class Task
     {
-        public int ID { get; set; }
+        public Task() { }
 
+        public int ID { get; set; }
+        
         public Guid SyncGuid { get; set; }
 
         public string Input { get; set; }

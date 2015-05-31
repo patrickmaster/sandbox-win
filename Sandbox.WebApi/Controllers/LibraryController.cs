@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Sandbox.Contracts.Types;
 using Sandbox.WebApi.Repositories;
+using Sandbox.Contracts.MySql;
+
 
 namespace Sandbox.WebApi.Controllers
 {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Sandbox.Contracts.MySql;
 
 namespace Sandbox.Contracts.Types
 {
