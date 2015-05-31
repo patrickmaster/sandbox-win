@@ -16,5 +16,7 @@ namespace Sandbox.Environment.Compiler
         public VariableType ReturnType { get; set; } // to be removed
 
         public string Code { get; set; }
+
+        public bool UseWrapper { get; set; }
     }
 }

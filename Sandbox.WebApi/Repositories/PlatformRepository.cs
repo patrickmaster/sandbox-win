@@ -14,7 +14,7 @@ namespace Sandbox.WebApi.Repositories
             return (from PlatformType type in Enum.GetValues(typeof (PlatformType))
                 select new Platform
                 {
-                    Id = (int) type, Name = type.ToString()
+                    ID = (int) type, Name = type.ToString()
                 });
         }
     }

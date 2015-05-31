@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sandbox.Contracts.Types;
 using Sandbox.Contracts.Types.Code;
 using Sandbox.Contracts.Types.Environment;
@@ -45,10 +46,11 @@ namespace Sandbox.Environment
             return new CompilerArgs
             {
                 PackageName = name,
-                Libraries = input.Libraries,
+                Libraries = input.Libraries.Select(x => x.Name),
                 ReturnType = VariableType.Integer,
                 Code = input.Code,
-                Platform = input.Platform
+                Platform = input.Platform,
+                UseWrapper = input.UseWrapper
             };
         }
 

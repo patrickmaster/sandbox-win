@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -105,11 +106,6 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        protected void ThrowError(string message)
-        {
-            throw new CompilerException(message, null);
-        }
-
         protected void ThrowCompilationError(string compilationResult)
         {
             throw new CompilerException(compilationResult);
@@ -121,8 +117,18 @@ namespace Sandbox.Environment.Compiler
 
             using (FileStream stream = new FileStream(filePath, FileMode.Create))
             {
-                IWrapper wrapper = GetCodeWrapper(Args);
-                wrapper.ToStream(stream);
+                if (Args.UseWrapper)
+                {
+                    IWrapper wrapper = GetCodeWrapper(Args);
+                    wrapper.ToStream(stream);
+                }
+                else
+                {
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        writer.Write(Args.Code);
+                    }
+                }
             }
         }
 
@@ -131,6 +137,15 @@ namespace Sandbox.Environment.Compiler
             File.Copy(
                 Path.Combine(ExtensionsDirectory, library, relativeFilePath),
                 Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, relativeFilePath));
+        }
+        protected static string GetCompilationResult(Process process)
+        {
+            string compilationResult = process.StandardError.ReadToEnd();
+            if (string.IsNullOrWhiteSpace(compilationResult))
+            {
+                compilationResult = process.StandardOutput.ReadToEnd();
+            }
+            return compilationResult;
         }
     }
 }

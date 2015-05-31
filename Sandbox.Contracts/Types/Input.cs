@@ -8,10 +8,11 @@ namespace Sandbox.Contracts.Types
         [Required]
         public PlatformType Platform { get; set; }
 
-        public IEnumerable<string> Libraries { get; set; }
+        public IEnumerable<Library> Libraries { get; set; }
 
         [Required]
         public string Code { get; set; }
 
+        public bool UseWrapper { get; set; }
     }
 }

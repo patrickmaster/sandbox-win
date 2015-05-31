@@ -8,7 +8,7 @@ using Sandbox.Environment.Configuration;
 
 namespace Sandbox.Environment.Executor
 {
-    class DotNetExecutor : IExecutor
+    class DotNetExecutor : Executor, IExecutor
     {
         public string Run(ExecutorArgs args)
         {
@@ -20,14 +20,13 @@ namespace Sandbox.Environment.Executor
             {
                 FileName = executablePath,
                 RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 UseShellExecute = false
             };
 
             process.Start();
-            result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
-
-            return result.Trim();
+            return ReadExecutionResult(process);
         }
     }
 }

@@ -75,6 +75,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,10 +94,12 @@
     <Compile Include="Compiler\NativeCompiler.cs" />
     <Compile Include="Compiler\PythonCompiler.cs" />
     <Compile Include="Compiler\ScriptCompiler.cs" />
+    <Compile Include="Executor\Executor.cs" />
     <Compile Include="Executor\ExecutorArgs.cs" />
     <Compile Include="Executor\JavaExecutor.cs" />
     <Compile Include="Executor\DotNetExecutor.cs" />
     <Compile Include="Executor\PythonExecutor.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Wrapper\DotNetWrapper.cs" />
     <Compile Include="Wrapper\IWrapper.cs" />

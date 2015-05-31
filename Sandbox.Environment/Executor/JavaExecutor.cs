@@ -9,7 +9,7 @@ using Sandbox.Contracts.Types;
 
 namespace Sandbox.Environment.Executor
 {
-    class JavaExecutor : IExecutor
+    class JavaExecutor : Executor, IExecutor
     {
         public string Run(ExecutorArgs args)
         {
@@ -22,15 +22,14 @@ namespace Sandbox.Environment.Executor
                 FileName = ConfigurationManager.AppSettings["JavaExecutorPath"],
                 Arguments = string.Format(@"-cp .;""{0}/*""; ""{1}""", executablePath, args.PackageName),
                 RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 WorkingDirectory = EnvironmentPath.GetPackageDirectory(args.Platform, args.PackageName)
             };
 
             process.Start();
-            result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
-
-            return result.Trim();
+            return ReadExecutionResult(process);
         }
     }
 }
