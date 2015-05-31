@@ -8,7 +8,7 @@ namespace Sandbox.Contracts.Queue
 {
     class MySqlOperationsQueue : IOperationsQueue
     {
-        readonly SandboxContext _context = SandboxContext.Instance;
+        readonly SandboxContext _context = SandboxContext.Create();
 
         public Guid Enqueue(Input input)
         {

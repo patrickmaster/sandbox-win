@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -11,15 +12,20 @@ namespace Sandbox.Contracts.MySql
 {
     internal class SandboxContext : DbContext
     {
-        private static SandboxContext _instance;
-
-        public static SandboxContext Instance
+        public static SandboxContext Create()
         {
-            get { return _instance ?? (_instance = new SandboxContext()); }
+            string connectionStringName = ConfigurationManager.AppSettings["UseConnectionString"];
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                connectionStringName = "MySqlConnectionString";
+            }
+
+            SandboxContext instance = new SandboxContext(connectionStringName);
+            return instance;
         }
 
-        private SandboxContext()
-            : base("MySqlConnectionString")
+        private SandboxContext(string connectionStringName)
+            : base(connectionStringName)
         {
             Database.SetInitializer(new SandboxInitializer());
         }

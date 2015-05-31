@@ -12,7 +12,7 @@ namespace Sandbox.Contracts.Queue
 {
     class MySqlOperationsDequeue : IOperationsDequeue
     {
-        readonly SandboxContext _context = SandboxContext.Instance;
+        readonly SandboxContext _context = SandboxContext.Create();
 
         static MySqlOperationsDequeue()
         {

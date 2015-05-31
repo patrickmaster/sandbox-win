@@ -10,7 +10,7 @@ namespace Sandbox.Contracts.Api
 {
     class LibraryProvider : ILibraryProvider
     {
-        readonly SandboxContext _context = SandboxContext.Instance;
+        readonly SandboxContext _context = SandboxContext.Create();
 
         public IEnumerable<Library> GetAll()
         {
