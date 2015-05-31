@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Sandbox.Contracts.MySql;
+using Sandbox.Contracts.Types.Code;
 
 namespace Sandbox.Contracts.Types
 {
@@ -13,6 +14,9 @@ namespace Sandbox.Contracts.Types
 
         [Required]
         public string Code { get; set; }
+
+        [Required]
+        public VariableType Variable { get; set; }
 
         public bool UseWrapper { get; set; }
     }
