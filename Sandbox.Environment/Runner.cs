@@ -47,7 +47,7 @@ namespace Sandbox.Environment
             {
                 PackageName = name,
                 Libraries = input.Libraries.Select(x => x.Name),
-                ReturnType = VariableType.Integer,
+                ReturnType = input.ReturnType,
                 Code = input.Code,
                 Platform = input.Platform,
                 UseWrapper = input.UseWrapper

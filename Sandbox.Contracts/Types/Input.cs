@@ -16,7 +16,7 @@ namespace Sandbox.Contracts.Types
         public string Code { get; set; }
 
         [Required]
-        public VariableType Variable { get; set; }
+        public VariableType ReturnType { get; set; }
 
         public bool UseWrapper { get; set; }
     }

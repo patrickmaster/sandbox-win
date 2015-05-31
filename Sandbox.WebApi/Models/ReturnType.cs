@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Sandbox.WebApi.Models
 {
-    public class Variable
+    public class ReturnType
     {
         public int ID { get; set; }
 

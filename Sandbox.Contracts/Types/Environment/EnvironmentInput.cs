@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sandbox.Contracts.MySql;
+using Sandbox.Contracts.Types.Code;
 
 namespace Sandbox.Contracts.Types.Environment
 {
@@ -16,6 +17,8 @@ namespace Sandbox.Contracts.Types.Environment
         public IEnumerable<Library> Libraries { get; set; }
 
         public string Code { get; set; }
+
+        public VariableType ReturnType { get; set; }
 
         public bool UseWrapper { get; set; }
     }

@@ -8,12 +8,12 @@ using Sandbox.Contracts.Types.Code;
 
 namespace Sandbox.WebApi.Repositories
 {
-    public class VariableRepository
+    public class ReturnTypeRepository
     {
-        public IEnumerable<Variable> GetAll()
+        public IEnumerable<ReturnType> GetAll()
         {
             return (from VariableType type in Enum.GetValues(typeof(VariableType))
-                    select new Variable
+                    select new ReturnType
                     {
                         ID = (int)type,
                         Name = type.ToString()

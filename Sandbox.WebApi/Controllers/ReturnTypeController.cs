@@ -8,11 +8,11 @@ using Sandbox.WebApi.Repositories;
 
 namespace Sandbox.WebApi.Controllers
 {
-    public class VariableController: BaseController
+    public class ReturnTypeController : BaseController
     {
-        readonly VariableRepository _repository = new VariableRepository();
+        readonly ReturnTypeRepository _repository = new ReturnTypeRepository();
 
-        public IEnumerable<Variable> Get()
+        public IEnumerable<ReturnType> Get()
         {
             return _repository.GetAll();
         }
