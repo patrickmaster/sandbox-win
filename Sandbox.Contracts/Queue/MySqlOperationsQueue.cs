@@ -23,19 +23,33 @@ namespace Sandbox.Contracts.Queue
             return task.SyncGuid;
         }
 
-        public bool TryGet(Guid id, out Output output)
+        public OperationStatus TryGet(Guid id, out Output output)
         {
             Task task = _context.Tasks.FirstOrDefault(x => x.SyncGuid == id);
+            output = null;
 
-            if (task.Resolved)
+            if (task != null)
             {
-                output = JsonConvert.DeserializeObject<Output>(task.Output);
-                return true;
+                if (task.Processed)
+                {
+                    if (task.Resolved)
+                    {
+                        output = JsonConvert.DeserializeObject<Output>(task.Output);
+                        return OperationStatus.Resolved;
+                    }
+                    else
+                    {
+                        return OperationStatus.Processing;
+                    }
+                }
+                else
+                {
+                    return OperationStatus.Queued;
+                }
             }
             else
             {
-                output = null;
-                return false;
+                return OperationStatus.NotFound;
             }
         }
     }

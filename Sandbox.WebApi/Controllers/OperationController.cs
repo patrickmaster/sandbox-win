@@ -15,17 +15,19 @@ namespace Sandbox.WebApi.Controllers
     {
         private readonly IOperationsQueue _queue = Manager.GetQueue();
 
-        public Output Get(Guid id)
+        public HttpResponseMessage Get(Guid id)
         {
             Output output;
 
-            if (_queue.TryGet(id, out output))
+            switch (_queue.TryGet(id, out output))
             {
-                return output;
-            }
-            else
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                case OperationStatus.Resolved:
+                    return Request.CreateResponse(output);
+                case OperationStatus.Queued:
+                case OperationStatus.Processing:
+                    return Request.CreateResponse(HttpStatusCode.Accepted);
+                default:
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
             }
         }
 
@@ -33,7 +35,7 @@ namespace Sandbox.WebApi.Controllers
         {
             Guid id = _queue.Enqueue(input);
 
-            return Request.CreateResponse(new {Id = id});
+            return Request.CreateResponse(new { Id = id });
         }
     }
 }

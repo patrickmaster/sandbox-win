@@ -77,6 +77,7 @@
     <Compile Include="Api\ILibraryProvider.cs" />
     <Compile Include="Api\LibraryProvider.cs" />
     <Compile Include="Manager.cs" />
+    <Compile Include="Queue\OperationStatus.cs" />
     <Compile Include="Types\Environment\EnvironmentInput.cs" />
     <Compile Include="Types\Environment\EnvironmentOutput.cs" />
     <Compile Include="Types\Input.cs" />

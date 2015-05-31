@@ -22,6 +22,6 @@ namespace Sandbox.Contracts.Queue
         /// <param name="id">Unique identifier of the operation requested</param>
         /// <param name="output">Operation result or null if unavailable</param>
         /// <returns>True if the result is available, false otherwise</returns>
-        bool TryGet(Guid id, out Output output);
+        OperationStatus TryGet(Guid id, out Output output);
     }
 }

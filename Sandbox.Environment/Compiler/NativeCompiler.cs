@@ -44,20 +44,24 @@ namespace Sandbox.Environment.Compiler
             File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
                 Path.Combine(PackageDirectory, ExecutableFile));
 
-            foreach (string library in Args.Libraries)
+            if (Args.Libraries != null)
             {
-                File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
-                    Path.Combine(PackageDirectory, library + ".dll"));
+                foreach (string library in Args.Libraries)
+                {
+                    File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
+                        Path.Combine(PackageDirectory, library + ".dll"));
+                }
             }
         }
 
         protected override void CompileSource(string sourceFilePath, string targetFile)
         {
             Process process = new Process();
-            string gccArgs = string.Format(@"""{0}"" -o ""{1}"" -L./", sourceFilePath, targetFile);
+            string gccArgs = string.Format(@"""{0}"" -o ""{1}"" -static-libgcc -static-libstdc++", sourceFilePath, targetFile);
 
-            if (Args.Libraries != null)
+            if (Args.Libraries != null && Args.Libraries.Any())
             {
+                gccArgs += " -L.";
                 foreach (string library in Args.Libraries)
                 {
                     gccArgs += " -l" + library;
@@ -70,11 +74,17 @@ namespace Sandbox.Environment.Compiler
                 Arguments = gccArgs,
                 WorkingDirectory = Path.GetDirectoryName(sourceFilePath),
                 UseShellExecute = false,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
             };
 
             process.Start();
-            string compilationResult = process.StandardOutput.ReadToEnd();
+            string compilationResult = process.StandardError.ReadToEnd();
+            if (string.IsNullOrWhiteSpace(compilationResult))
+            {
+                compilationResult = process.StandardOutput.ReadToEnd();
+            }
+            
             process.WaitForExit();
 
             if (!string.IsNullOrWhiteSpace(compilationResult))

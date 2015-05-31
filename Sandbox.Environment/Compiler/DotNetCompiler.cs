@@ -75,21 +75,17 @@ namespace Sandbox.Environment.Compiler
             CompilerResults cr = codeProvider.CompileAssemblyFromFile(parameters, sourceFilePath);
             if (cr.Errors.Count > 0)
             {
-                // Display compilation errors.
-                Console.WriteLine("Errors building {0} into {1}",
+                // THROW compilation errors.
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendFormat("Errors building {0} into {1}",
                     "exampleDll.cs", cr.PathToAssembly);
                 foreach (CompilerError ce in cr.Errors)
                 {
-                    Console.WriteLine("  {0}", ce);
-                    Console.WriteLine();
+                    sb.AppendFormat("  {0}", ce);
                 }
-            }
-            else
-            {
-                Console.WriteLine("Source {0} built into {1} successfully.",
-                    sourceFilePath, cr.PathToAssembly);
-                Console.WriteLine("{0} temporary files created during the compilation.",
-                    parameters.TempFiles.Count);
+
+                throw new CompilerException(sb.ToString());
             }
         }
 

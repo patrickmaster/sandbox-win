@@ -64,11 +64,16 @@ namespace Sandbox.Environment.Compiler
                 Arguments = javaArgs,
                 WorkingDirectory = Path.GetDirectoryName(sourceFilePath),
                 UseShellExecute = false,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
             };
 
             process.Start();
-            string compilationResult = process.StandardOutput.ReadToEnd();
+            string compilationResult = process.StandardError.ReadToEnd();
+            if (string.IsNullOrWhiteSpace(compilationResult))
+            {
+                compilationResult = process.StandardOutput.ReadToEnd();
+            }
             process.WaitForExit();
 
             if (!string.IsNullOrWhiteSpace(compilationResult))
