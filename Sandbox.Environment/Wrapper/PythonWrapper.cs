@@ -23,10 +23,14 @@ namespace Sandbox.Environment.Wrapper
         {
             using (TextWriter writer = new StreamWriter(stream))
             {
-                foreach (string library in _args.Libraries)
+                if (_args.Libraries != null)
                 {
-                    writer.WriteLine(@"from {0} import *", library);
+                    foreach (string library in _args.Libraries)
+                    {
+                        writer.WriteLine(@"from {0} import *", library);
+                    }
                 }
+
                 writer.WriteLine();
                 writer.WriteLine(@"def resolve():");
                 WriteIndentedUserCode(writer);

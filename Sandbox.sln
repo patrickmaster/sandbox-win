@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Environment", "Sand
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Contracts", "Sandbox.Contracts\Sandbox.Contracts.csproj", "{C95B18C9-D774-4D06-8515-E260C26024AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Database", "Sandbox.Database\Sandbox.Database.csproj", "{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		common-dir|Any CPU = common-dir|Any CPU
@@ -85,21 +83,6 @@ Global
 		{C95B18C9-D774-4D06-8515-E260C26024AB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C95B18C9-D774-4D06-8515-E260C26024AB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C95B18C9-D774-4D06-8515-E260C26024AB}.Release|Win32.ActiveCfg = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.common-dir|Any CPU.ActiveCfg = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.common-dir|Any CPU.Build.0 = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.common-dir|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.common-dir|Mixed Platforms.Build.0 = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.common-dir|Win32.ActiveCfg = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{B1DFA1F9-04B3-46C1-A369-158E4BC8DDC6}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

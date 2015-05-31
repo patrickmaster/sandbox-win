@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace Sandbox.WebApi.Models
+namespace Sandbox.Contracts.Types
 {
     public class Output
     {

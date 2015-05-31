@@ -29,10 +29,13 @@ namespace Sandbox.Environment.Compiler
 
         protected override void ImportLibraries()
         {
-            foreach (string library in Args.Libraries)
+            if (Args.Libraries != null)
             {
-                ImportLibraryFile(library, library + ".dll");
-                ImportLibraryFile(library, library + ".h");
+                foreach (string library in Args.Libraries)
+                {
+                    ImportLibraryFile(library, library + ".dll");
+                    ImportLibraryFile(library, library + ".h");
+                }
             }
         }
 
@@ -53,9 +56,12 @@ namespace Sandbox.Environment.Compiler
             Process process = new Process();
             string gccArgs = string.Format(@"""{0}"" -o ""{1}"" -L./", sourceFilePath, targetFile);
 
-            foreach (string library in Args.Libraries)
+            if (Args.Libraries != null)
             {
-                gccArgs += " -l" + library;
+                foreach (string library in Args.Libraries)
+                {
+                    gccArgs += " -l" + library;
+                }
             }
 
             process.StartInfo = new ProcessStartInfo

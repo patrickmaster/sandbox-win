@@ -1,97 +1,48 @@
 ﻿using System;
-using CommandLine;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Cache;
+using System.Threading;
 using Sandbox.Contracts;
+using Sandbox.Contracts.Queue;
 using Sandbox.Contracts.Serialization;
 using Sandbox.Contracts.Types;
+using Sandbox.Contracts.Types.Environment;
 using Sandbox.Environment.Compiler;
 using Sandbox.Environment.Executor;
-using Sandbox.Environment.Interface;
 using Manager = Sandbox.Environment.Compiler.Manager;
 
 namespace Sandbox.Environment
 {
     class Program
     {
-        private static Options _options;
+        private static readonly IOperationsDequeue Dequeue = Contracts.Manager.GetDequeue();
+
         static void Main(string[] args)
         {
-            try
+            while (true)
             {
-                _options = GetOptions(args);
+                IEnumerable<EnvironmentInput> requests = Dequeue.GetUnresolved();
                 
-                EnvironmentInput environmentInput = GetEnvironmentInput();
-                ICompiler compiler = Manager.GetCompiler(environmentInput.Platform);
-                IExecutor executor = Executor.Manager.GetExecutor(environmentInput.Platform);
-                CompilerArgs compilerArgs = GetCompilerArgs(environmentInput);
-                ExecutorArgs executorArgs = GetExecutorArgs(environmentInput);
-                
-                compiler.Compile(compilerArgs);
+                if (requests != null && requests.Any())
+                {
+                    Console.WriteLine("Resolving requests...");
 
-                string result = executor.Run(executorArgs);
+                    foreach (EnvironmentInput request in requests)
+                    {
+                        EnvironmentOutput result = Runner.RunTask(request);
 
-                ReturnOutput(result);
+                        Dequeue.Resolve(request, result);
+                    }
+
+                    Console.WriteLine("Requests resolved");
+                }
+                else
+                {
+                    Console.WriteLine("No tasks in queue. Sleeping...");
+                    Thread.Sleep(500);
+                }
             }
-            catch (Exception e)
-            {
-                ReturnOutput(e);
-            }
-        }
-
-        private static ExecutorArgs GetExecutorArgs(EnvironmentInput environmentInput)
-        {
-            return new ExecutorArgs
-            {
-                PackageName = environmentInput.PackageName,
-                Platform = environmentInput.Platform
-            };
-        }
-
-        private static CompilerArgs GetCompilerArgs(EnvironmentInput environmentInput)
-        {
-            return new CompilerArgs
-            {
-                PackageName = environmentInput.PackageName,
-                Libraries = environmentInput.Libraries,
-                InputArguments = environmentInput.InputArguments,
-                ReturnType = environmentInput.ReturnType,
-                Code = environmentInput.Code,
-                Platform = environmentInput.Platform
-            };
-        }
-
-        private static void ReturnOutput(object result)
-        {
-            EnvironmentOutput output = new EnvironmentOutput();
-
-            if (result is Exception)
-            {
-                output.Exception = (Exception)result;
-            }
-            else
-            {
-                output.Result = result.ToString();
-            }
-
-            Contracts.Serialization.Manager.GetSerializer(_options.Format).Serialize(output, _options.OutputPath);
-        }
-
-        private static EnvironmentInput GetEnvironmentInput()
-        {
-            ISerializer serializer = Contracts.Serialization.Manager.GetSerializer(_options.Format);
-            EnvironmentInput args = serializer.Deserialize<EnvironmentInput>(_options.InputPath);
-
-            return args;
-        }
-
-        private static Options GetOptions(string[] args)
-        {
-            Options options = new Options();
-            using (Parser parser = new Parser())
-            {
-                parser.ParseArguments(args, options);
-            }
-
-            return options;
         }
     }
 }

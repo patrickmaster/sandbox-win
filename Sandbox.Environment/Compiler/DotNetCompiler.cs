@@ -32,9 +32,12 @@ namespace Sandbox.Environment.Compiler
 
         protected override void ImportLibraries()
         {
-            foreach (string library in Args.Libraries)
+            if (Args.Libraries != null)
             {
-                ImportLibraryFile(library, library + ".dll");
+                foreach (string library in Args.Libraries)
+                {
+                    ImportLibraryFile(library, library + ".dll");
+                }
             }
         }
 
@@ -43,10 +46,13 @@ namespace Sandbox.Environment.Compiler
             File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
                 Path.Combine(PackageDirectory, ExecutableFile));
 
-            foreach (string library in Args.Libraries)
+            if (Args.Libraries != null)
             {
-                File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
-                    Path.Combine(PackageDirectory, library + ".dll"));
+                foreach (string library in Args.Libraries)
+                {
+                    File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
+                        Path.Combine(PackageDirectory, library + ".dll"));
+                }
             }
         }
 
@@ -57,10 +63,15 @@ namespace Sandbox.Environment.Compiler
             //parameters.CompilerOptions = "/target:library";
             parameters.GenerateExecutable = true;
             parameters.OutputAssembly = targetFile;
-            foreach (string library in Args.Libraries)
+
+            if (Args.Libraries != null)
             {
-                parameters.ReferencedAssemblies.Add(Path.Combine(TemporaryDirectory, library + ".dll"));
+                foreach (string library in Args.Libraries)
+                {
+                    parameters.ReferencedAssemblies.Add(Path.Combine(TemporaryDirectory, library + ".dll"));
+                }
             }
+
             CompilerResults cr = codeProvider.CompileAssemblyFromFile(parameters, sourceFilePath);
             if (cr.Errors.Count > 0)
             {
@@ -69,7 +80,7 @@ namespace Sandbox.Environment.Compiler
                     "exampleDll.cs", cr.PathToAssembly);
                 foreach (CompilerError ce in cr.Errors)
                 {
-                    Console.WriteLine("  {0}", ce.ToString());
+                    Console.WriteLine("  {0}", ce);
                     Console.WriteLine();
                 }
             }
@@ -78,7 +89,7 @@ namespace Sandbox.Environment.Compiler
                 Console.WriteLine("Source {0} built into {1} successfully.",
                     sourceFilePath, cr.PathToAssembly);
                 Console.WriteLine("{0} temporary files created during the compilation.",
-                    parameters.TempFiles.Count.ToString());
+                    parameters.TempFiles.Count);
             }
         }
 

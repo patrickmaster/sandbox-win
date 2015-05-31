@@ -31,12 +31,12 @@ namespace Sandbox.Environment.Compiler
             }
             catch (CompilerException e)
             {
-                RemovePackageDirectoryIfExists();
+                //RemovePackageDirectoryIfExists();
                 throw;
             }
             finally
             {
-                RemoveTemporaryDirectoryIfExists();
+                //RemoveTemporaryDirectoryIfExists();
             }
         }
 

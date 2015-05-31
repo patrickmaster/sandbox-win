@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sandbox.Contracts.Types;
+using Sandbox.Contracts.Types.Environment;
 
-namespace Sandbox.Contracts.DataLayer
+namespace Sandbox.Contracts.Queue
 {
     /// <summary>
     /// To be used by the environment mechanism
@@ -22,7 +22,7 @@ namespace Sandbox.Contracts.DataLayer
         /// </summary>
         /// <param name="count">The number of requests to get</param>
         /// <returns>A collection of operation requests</returns>
-        IEnumerable<EnvironmentOutput> GetUnresolved(int count);
+        IEnumerable<EnvironmentInput> GetUnresolved(int count);
 
         /// <summary>
         /// Puts the result of the operation to the request

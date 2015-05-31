@@ -13,9 +13,7 @@ namespace Sandbox.Environment.Compiler
 
         public IEnumerable<string> Libraries { get; set; }
 
-        public IEnumerable<InputArgument> InputArguments { get; set; } 
-
-        public VariableType ReturnType { get; set; }
+        public VariableType ReturnType { get; set; } // to be removed
 
         public string Code { get; set; }
     }

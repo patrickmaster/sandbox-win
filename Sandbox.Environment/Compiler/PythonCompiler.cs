@@ -61,9 +61,12 @@ namespace Sandbox.Environment.Compiler
 
         protected override void ImportLibraries()
         {
-            foreach (string library in Args.Libraries)
+            if (Args.Libraries != null)
             {
-                ImportLibraryFile(library, library + ".py");
+                foreach (string library in Args.Libraries)
+                {
+                    ImportLibraryFile(library, library + ".py");
+                }
             }
         }
     }

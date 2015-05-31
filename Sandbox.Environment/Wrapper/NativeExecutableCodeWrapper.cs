@@ -21,9 +21,12 @@ namespace Sandbox.Environment.Wrapper
                 writer.WriteLine(@"#include <stdio.h>");
                 writer.WriteLine(@"#include <iostream>");
 
-                foreach (string library in _args.Libraries)
+                if (_args.Libraries != null)
                 {
-                    writer.WriteLine(@"#include ""{0}.h""", library);
+                    foreach (string library in _args.Libraries)
+                    {
+                        writer.WriteLine(@"#include ""{0}.h""", library);
+                    }
                 }
 
                 writer.WriteLine(@"{0} resolve()", GetTypeRepresentation(_args.ReturnType));

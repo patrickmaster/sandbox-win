@@ -17,10 +17,10 @@ namespace Sandbox.Contracts.Serialization
             serializer.Serialize(args, filename);
         }
 
-        public T Deserialize<T>(string filename)
+        public T Deserialize<T>(string serialized)
         {
             SharpSerializer serializer = new SharpSerializer();
-            return (T)serializer.Deserialize(filename);
+            return (T)serializer.Deserialize(serialized);
         }
     }
 }

@@ -23,8 +23,8 @@ namespace Sandbox.Environment.Wrapper
         {
             using (TextWriter writer = new StreamWriter(stream))
             {
-                writer.WriteLine(@"class JavaApp{");
-                writer.WriteLine(@"public static  {0} resolve()", GetTypeRepresentation(_args.ReturnType));
+                writer.WriteLine(@"class {0} {{", _args.PackageName);
+                writer.WriteLine(@"public static {0} resolve()", GetTypeRepresentation(_args.ReturnType));
                 writer.WriteLine(@"{");
                 writer.WriteLine(_args.Code);
                 writer.WriteLine(@"}");

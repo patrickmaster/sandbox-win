@@ -3,11 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sandbox.Contracts.Api;
+using Sandbox.Contracts.Queue;
+using Sandbox.Contracts.Serialization;
 
-namespace Sandbox.Contracts.Serialization
+namespace Sandbox.Contracts
 {
     public class Manager
     {
+        public static ILibraryProvider GetLibraryProvider()
+        {
+            return new LibraryProvider();
+        }
+
+        public static IOperationsQueue GetQueue()
+        {
+            return new MySqlOperationsQueue();
+        }
+
+        public static IOperationsDequeue GetDequeue()
+        {
+            return new MySqlOperationsDequeue();
+        }
+
         public static ISerializer GetSerializer(SerializerType type)
         {
             switch (type)

@@ -29,25 +29,28 @@ namespace Sandbox.Environment.Compiler
 
         protected override void ImportLibraries()
         {
-            
-            foreach (string library in Args.Libraries)
+            if (Args.Libraries != null)
             {
-                ImportLibraryFile(library, library + ".jar");
+                foreach (string library in Args.Libraries)
+                {
+                    ImportLibraryFile(library, library + ".jar");
+                }
             }
-             
         }
 
         protected override void MoveToTargetDirectory()
         {
             File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
                 Path.Combine(PackageDirectory, ExecutableFile));
-            
-            foreach (string library in Args.Libraries)
+
+            if (Args.Libraries != null)
             {
-                File.Move(Path.Combine(TemporaryDirectory, library + ".jar"),
-                    Path.Combine(PackageDirectory, library + ".jar"));
+                foreach (string library in Args.Libraries)
+                {
+                    File.Move(Path.Combine(TemporaryDirectory, library + ".jar"),
+                        Path.Combine(PackageDirectory, library + ".jar"));
+                }
             }
-             
         }
 
         protected override void CompileSource(string sourceFilePath, string targetFilePath)
