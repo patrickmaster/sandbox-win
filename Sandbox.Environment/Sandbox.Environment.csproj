@@ -99,7 +99,6 @@
     <Compile Include="Executor\JavaExecutor.cs" />
     <Compile Include="Executor\DotNetExecutor.cs" />
     <Compile Include="Executor\PythonExecutor.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Wrapper\DotNetWrapper.cs" />
     <Compile Include="Wrapper\IWrapper.cs" />

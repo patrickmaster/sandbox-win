@@ -12,22 +12,22 @@ namespace Sandbox.Contracts.MySql
     {
         protected override void Seed(SandboxContext context)
         {
-            context.Libraries.Add(new Library
+            context.Libraries.Add(new SqlLibrary
             {
                 Name = "exampleDll",
                 Platform = PlatformType.DotNet
             });
-            context.Libraries.Add(new Library
+            context.Libraries.Add(new SqlLibrary
             {
                 Name = "Simple",
                 Platform = PlatformType.Java
             });
-            context.Libraries.Add(new Library
+            context.Libraries.Add(new SqlLibrary
             {
                 Name = "mydll",
                 Platform = PlatformType.Native
             });
-            context.Libraries.Add(new Library
+            context.Libraries.Add(new SqlLibrary
             {
                 Name="equation",
                 Platform = PlatformType.Python

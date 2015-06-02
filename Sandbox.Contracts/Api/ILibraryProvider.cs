@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sandbox.Contracts.Types;
-using Sandbox.Contracts.MySql;
 
 namespace Sandbox.Contracts.Api
 {
@@ -13,5 +12,11 @@ namespace Sandbox.Contracts.Api
         IEnumerable<Library> GetAll();
 
         void Add(Library library);
+
+        void Update(Library library);
+
+        void Delete(Library library);
+
+
     }
 }

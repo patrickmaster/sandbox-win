@@ -30,7 +30,7 @@ namespace Sandbox.Contracts.Queue
 
         public IEnumerable<EnvironmentInput> GetUnresolved(int count)
         {
-            IEnumerable<Task> tasks = _context.Tasks
+            IEnumerable<SqlTask> tasks = _context.Tasks
                 .Where(x => !x.Resolved && !x.Processed)
                 .OrderBy(x => x.Timestamp)
                 .Take(count)
@@ -38,7 +38,7 @@ namespace Sandbox.Contracts.Queue
 
             List<EnvironmentInput> result = new List<EnvironmentInput>();
 
-            foreach (Task t in tasks)
+            foreach (SqlTask t in tasks)
             {
                 t.Processed = true;
                 EnvironmentInput input = JsonConvert.DeserializeObject<EnvironmentInput>(t.Input);
@@ -53,7 +53,7 @@ namespace Sandbox.Contracts.Queue
 
         public void Resolve(EnvironmentInput request, EnvironmentOutput result)
         {
-            Task task = _context.Tasks
+            SqlTask task = _context.Tasks
                 .FirstOrDefault(x => x.SyncGuid == request.SyncGuid);
 
             task.Output = JsonConvert.SerializeObject(result);

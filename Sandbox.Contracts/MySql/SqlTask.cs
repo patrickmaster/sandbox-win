@@ -9,9 +9,9 @@ using Sandbox.Contracts.Types;
 
 namespace Sandbox.Contracts.MySql
 {
-    public class Task
+    class SqlTask
     {
-        public Task() { }
+        public SqlTask() { }
 
         public int ID { get; set; }
         
@@ -25,7 +25,7 @@ namespace Sandbox.Contracts.MySql
 
         public long Timestamp { get; set; }
 
-        public virtual ICollection<Library> Libraries { get; set; }
+        public virtual ICollection<SqlLibrary> Libraries { get; set; }
 
         public bool Resolved { get; set; }
 

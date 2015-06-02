@@ -18,7 +18,7 @@ namespace Sandbox.Contracts.Queue
 
         public Guid Enqueue(Input input)
         {
-            Task task = new Task();
+            SqlTask task = new SqlTask();
             task.SyncGuid = Guid.NewGuid();
             task.Timestamp = DateTime.UtcNow.Ticks;
             task.Input = JsonConvert.SerializeObject(input);
@@ -31,7 +31,7 @@ namespace Sandbox.Contracts.Queue
 
         public OperationStatus TryGet(Guid id, out Output output)
         {
-            Task task = _context.Tasks.FirstOrDefault(x => x.SyncGuid == id);
+            SqlTask task = _context.Tasks.FirstOrDefault(x => x.SyncGuid == id);
             output = null;
 
             if (task != null)

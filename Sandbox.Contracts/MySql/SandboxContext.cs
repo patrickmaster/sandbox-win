@@ -30,14 +30,14 @@ namespace Sandbox.Contracts.MySql
             Database.SetInitializer(new SandboxInitializer());
         }
 
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<SqlTask> Tasks { get; set; }
 
-        public DbSet<Library> Libraries { get; set; }
+        public DbSet<SqlLibrary> Libraries { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Task>()
-                        .HasMany<Library>(t => t.Libraries)
+            modelBuilder.Entity<SqlTask>()
+                        .HasMany<SqlLibrary>(t => t.Libraries)
                         .WithMany(l => l.Tasks)
                         .Map(tl =>
                         {
