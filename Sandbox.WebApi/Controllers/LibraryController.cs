@@ -38,7 +38,6 @@ namespace Sandbox.WebApi.Controllers
 
             LibraryFile file = new LibraryFile();
             Library library = new Library();
-            Type libraryType = typeof (Library);
 
             foreach (HttpContent content in provider.Contents)
             {
@@ -49,53 +48,15 @@ namespace Sandbox.WebApi.Controllers
                 }
                 else
                 {
-                    string name = content.Headers.ContentDisposition.Name.Trim('"');
-                    string value = await content.ReadAsStringAsync();
-                    PropertyInfo prop = libraryType.GetProperty(name);
-                    
-                    if (prop != null)
-                    {
-                        prop.SetValue(library, GetValue(value, prop.PropertyType));
-                    }
+                    await SetPropertyFromContent(content, library);
                 }
             }
 
-            Validate(library);
-
-            if (!ModelState.IsValid)
-            {
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState));
-            }
+            ValidateEntity(library);
 
             _repository.Add(library, file);
 
             return library;
-        }
-
-        private object GetValue(string value, Type propertyType)
-        {
-            if (propertyType == typeof (string))
-            {
-                return value;
-            }
-            if (propertyType == typeof (double))
-            {
-                double val;
-                double.TryParse(value, out val);
-                return val;
-            }
-            if (propertyType == typeof (int))
-            {
-                int val;
-                int.TryParse(value, out val);
-                return val;
-            }
-            if (propertyType.IsEnum)
-            {
-                return Enum.Parse(propertyType, value);
-            }
-            
-            throw new NotSupportedException("Type of name [" + propertyType.Name + "] is not supported");
         }
 
         [Route("{id:int}")]
