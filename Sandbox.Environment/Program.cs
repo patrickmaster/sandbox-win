@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Cache;
 using System.Threading;
@@ -23,7 +24,8 @@ namespace Sandbox.Environment
             while (true)
             {
                 IEnumerable<EnvironmentInput> requests = Dequeue.GetUnresolved();
-                
+                int sleepingTimeout = GetTimeout();
+
                 if (requests != null && requests.Any())
                 {
                     Console.WriteLine("Resolving requests...");
@@ -40,9 +42,19 @@ namespace Sandbox.Environment
                 else
                 {
                     Console.WriteLine("No tasks in queue. Sleeping...");
-                    Thread.Sleep(500);
+                    Thread.Sleep(sleepingTimeout);
                 }
             }
+        }
+
+        private static int GetTimeout()
+        {
+            int value;
+            if (!int.TryParse(ConfigurationManager.AppSettings["QueueSleepTime"], out value))
+            {
+                value = 500;
+            }
+            return value;
         }
     }
 }
