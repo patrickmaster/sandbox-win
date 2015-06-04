@@ -34,17 +34,32 @@ namespace Sandbox.Contracts.Api
 
         public void Update(Library library)
         {
-            throw new NotImplementedException();
+            SqlLibrary itemToUpdate = _context.Libraries.SingleOrDefault(x => x.ID == library.ID);
+
+            if (itemToUpdate != null)
+            {
+                _context.Entry(itemToUpdate).CurrentValues.SetValues(library);
+                _context.SaveChanges();
+            }
         }
 
         public void Delete(Library library)
         {
-            throw new NotImplementedException();
+            SqlLibrary itemToRemove = _context.Libraries.SingleOrDefault(x => x.ID == library.ID);
+
+            if (itemToRemove != null)
+            {
+                _context.Libraries.Remove(itemToRemove);
+                _context.SaveChanges();
+            }
         }
 
         public Library Delete(int id)
         {
-            throw new NotImplementedException();
+            List<Library> libs = GetAll().ToList();
+            Library toDelete = libs.Find(x => x.ID == id);
+            Delete(toDelete);
+            return toDelete;
         }
     }
 }
