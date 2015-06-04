@@ -11,10 +11,12 @@ using Sandbox.Contracts.Types;
 
 namespace Sandbox.WebApi.Controllers
 {
+    [RoutePrefix("api/operation")]
     public class OperationController : BaseController
     {
         private readonly IOperationsQueue _queue = Manager.GetQueue();
 
+        [Route("{id:guid}")]
         public HttpResponseMessage Get(Guid id)
         {
             Output output;
@@ -31,6 +33,7 @@ namespace Sandbox.WebApi.Controllers
             }
         }
 
+        [Route("")]
         public HttpResponseMessage Post(Input input)
         {
             Guid id = _queue.Enqueue(input);
