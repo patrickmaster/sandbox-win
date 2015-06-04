@@ -83,6 +83,7 @@
     <Compile Include="Types\Input.cs" />
     <Compile Include="MySql\SqlLibrary.cs" />
     <Compile Include="Types\Library.cs" />
+    <Compile Include="Types\LibraryFile.cs" />
     <Compile Include="Types\Output.cs" />
     <Compile Include="Queue\IOperationsDequeue.cs" />
     <Compile Include="Queue\IOperationsQueue.cs" />

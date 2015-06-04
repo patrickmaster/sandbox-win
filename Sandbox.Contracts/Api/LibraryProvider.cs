@@ -25,7 +25,7 @@ namespace Sandbox.Contracts.Api
             return Mapper.Map<IEnumerable<SqlLibrary>, IEnumerable<Library>>(libs);
         }
 
-        public void Add(Library library)
+        public void Add(Library library, LibraryFile fileBytes)
         {
             SqlLibrary lib = Mapper.Map<SqlLibrary>(library);
             _context.Libraries.Add(lib);
@@ -38,6 +38,11 @@ namespace Sandbox.Contracts.Api
         }
 
         public void Delete(Library library)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Library Delete(int id)
         {
             throw new NotImplementedException();
         }

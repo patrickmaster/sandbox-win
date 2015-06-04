@@ -11,12 +11,12 @@ namespace Sandbox.Contracts.Api
     {
         IEnumerable<Library> GetAll();
 
-        void Add(Library library);
+        void Add(Library library, LibraryFile file);
 
         void Update(Library library);
 
         void Delete(Library library);
 
-
+        Library Delete(int id);
     }
 }
