@@ -8,6 +8,7 @@ using Sandbox.Contracts.MySql;
 using Sandbox.Contracts.Types;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.IO.Compression;
 
 namespace Sandbox.Contracts.Api
 {
@@ -48,8 +49,6 @@ namespace Sandbox.Contracts.Api
             }
             if (!Directory.Exists(path + @"\" + library.Name))
             {
-                _context.Libraries.Add(lib);
-                _context.SaveChanges();
                 Directory.CreateDirectory(path + @"\" + library.Name);
                 // Open file for reading
                 FileStream _FileStream =
@@ -61,13 +60,16 @@ namespace Sandbox.Contracts.Api
 
                 // close file stream
                 _FileStream.Close();
-                //Regex regexp = new Regex(@"\w(.n't)|\w+"); //zip file handler
-                //Match match = regexp.Match(fileBytes.Filename);
-                //string[] compressedExtenstions = { ".rar", ".zip", ".7z" };
-                //if(compressedExtenstions.Contains(match.ToString()))
-                //{
-                //    ZipFile.ExtractToDirectory(path + @"\" + library.Name + @"\" + fileBytes.Filename, path + @"\" + library.Name);
-                //}
+                Regex regexp = new Regex(@"\..{2,}"); //zip file handler
+                Match match = regexp.Match(fileBytes.Filename);
+                if (match.ToString() == ".zip")
+                {
+                    ZipFile.ExtractToDirectory(path + @"\" + library.Name + @"\" + fileBytes.Filename, path + @"\" + library.Name);
+                    FileInfo fi = new FileInfo(path + @"\" + library.Name + @"\" + fileBytes.Filename);
+                    fi.Delete();
+                }
+                _context.Libraries.Add(lib);
+                _context.SaveChanges();
                 
             }
             else
