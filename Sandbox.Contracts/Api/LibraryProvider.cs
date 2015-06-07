@@ -9,6 +9,7 @@ using Sandbox.Contracts.Types;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.IO.Compression;
+using System.Configuration;
 
 namespace Sandbox.Contracts.Api
 {
@@ -31,28 +32,28 @@ namespace Sandbox.Contracts.Api
         public void Add(Library library, LibraryFile fileBytes)
         {
             SqlLibrary lib = Mapper.Map<SqlLibrary>(library);
-            string path = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\") + @"Documents\Visual Studio 2013\Projects\sandbox-win\build\sandbox\extensions";
+            string buildPath = GetBuildPath();
             switch(library.Platform)
             {
                 case PlatformType.DotNet:
-                    path += @"\dotnet";
+                    buildPath += @"\dotnet";
                     break;
                 case PlatformType.Java:
-                    path += @"\java";
+                    buildPath += @"\java";
                     break;
                 case PlatformType.Native:
-                    path += @"\native";
+                    buildPath += @"\native";
                     break;
                 case PlatformType.Python:
-                    path += @"\python";
+                    buildPath += @"\python";
                     break;
             }
-            if (!Directory.Exists(path + @"\" + library.Name))
+            if (!Directory.Exists(buildPath + @"\" + library.Name))
             {
-                Directory.CreateDirectory(path + @"\" + library.Name);
+                Directory.CreateDirectory(buildPath + @"\" + library.Name);
                 // Open file for reading
                 FileStream _FileStream =
-                   new System.IO.FileStream(path + @"\" + library.Name + @"\" + fileBytes.Filename, System.IO.FileMode.Create,
+                   new System.IO.FileStream(buildPath + @"\" + library.Name + @"\" + fileBytes.Filename, System.IO.FileMode.Create,
                                             System.IO.FileAccess.Write);
                 // Writes a block of bytes to this stream using data from
                 // a byte array.
@@ -64,8 +65,8 @@ namespace Sandbox.Contracts.Api
                 Match match = regexp.Match(fileBytes.Filename);
                 if (match.ToString() == ".zip")
                 {
-                    ZipFile.ExtractToDirectory(path + @"\" + library.Name + @"\" + fileBytes.Filename, path + @"\" + library.Name);
-                    FileInfo fi = new FileInfo(path + @"\" + library.Name + @"\" + fileBytes.Filename);
+                    ZipFile.ExtractToDirectory(buildPath + @"\" + library.Name + @"\" + fileBytes.Filename, buildPath + @"\" + library.Name);
+                    FileInfo fi = new FileInfo(buildPath + @"\" + library.Name + @"\" + fileBytes.Filename);
                     fi.Delete();
                 }
                 _context.Libraries.Add(lib);
@@ -84,28 +85,32 @@ namespace Sandbox.Contracts.Api
 
             if (itemToUpdate != null)
             {
-                string path = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\") + @"Documents\Visual Studio 2013\Projects\sandbox-win\build\sandbox\extensions";
+                string buildPath = GetBuildPath();
                 switch (library.Platform)
                 {
                     case PlatformType.DotNet:
-                        path += @"\dotnet";
+                        buildPath += @"\dotnet";
                         break;
                     case PlatformType.Java:
-                        path += @"\java";
+                        buildPath += @"\java";
                         break;
                     case PlatformType.Native:
-                        path += @"\native";
+                        buildPath += @"\native";
                         break;
                     case PlatformType.Python:
-                        path += @"\python";
+                        buildPath += @"\python";
                         break;
                 }
-                if (!Directory.Exists(path + @"\" + library.Name))
+                if (!Directory.Exists(buildPath + @"\" + library.Name))
                 {
-                    Directory.Move(path + @"\" + itemToUpdate.Name, path + @"\" + library.Name);
+                    Directory.Move(buildPath + @"\" + itemToUpdate.Name, buildPath + @"\" + library.Name);
                     _context.Entry(itemToUpdate).CurrentValues.SetValues(library);
                     _context.SaveChanges();                  
-                }      
+                }
+                else
+                {
+                    throw new Exception("Name already in use");
+                }
             }
         }
 
@@ -115,28 +120,28 @@ namespace Sandbox.Contracts.Api
 
             if (itemToRemove != null)
             {
-                string path = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\") + @"Documents\Visual Studio 2013\Projects\sandbox-win\build\sandbox\extensions";
+                string buildPath = GetBuildPath();
                 switch (library.Platform)
                 {
                     case PlatformType.DotNet:
-                        path += @"\dotnet";
+                        buildPath += @"\dotnet";
                         break;
                     case PlatformType.Java:
-                        path += @"\java";
+                        buildPath += @"\java";
                         break;
                     case PlatformType.Native:
-                        path += @"\native";
+                        buildPath += @"\native";
                         break;
                     case PlatformType.Python:
-                        path += @"\python";
+                        buildPath += @"\python";
                         break;
                 }
-                DirectoryInfo dir = new DirectoryInfo(path + @"\" + library.Name);
+                DirectoryInfo dir = new DirectoryInfo(buildPath + @"\" + library.Name);
                 foreach (FileInfo fi in dir.GetFiles())
                 {
                     fi.Delete();
                 }
-                Directory.Delete(path + @"\" + library.Name);
+                Directory.Delete(buildPath + @"\" + library.Name);
                 _context.Libraries.Remove(itemToRemove);
                 _context.SaveChanges();
             }
@@ -148,6 +153,12 @@ namespace Sandbox.Contracts.Api
             Library toDelete = libs.Find(x => x.ID == id);
             Delete(toDelete);
             return toDelete;
+        }
+
+        private string GetBuildPath()
+        {
+            string configPath = ConfigurationManager.AppSettings["BuildPath"];
+            return string.IsNullOrEmpty(configPath) ? "buildPath" : configPath;
         }
     }
 }
