@@ -14,6 +14,10 @@ namespace Sandbox.WebApi.Controllers
     {
         readonly PlatformRepository _repository = new PlatformRepository();
 
+        /// <summary>
+        /// Gets all platforms available in the system
+        /// </summary>
+        /// <returns>Platforms collection</returns>
         [Route("")]
         public IEnumerable<Platform> Get()
         {

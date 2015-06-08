@@ -33,8 +33,8 @@ namespace Sandbox.Environment.Compiler
             {
                 foreach (string library in Args.Libraries)
                 {
-                    ImportLibraryFile(library, library + ".dll");
-                    ImportLibraryFile(library, library + ".h");
+                    ImportLibraryFile(library);
+                    ImportLibraryFile(library);
                 }
             }
         }

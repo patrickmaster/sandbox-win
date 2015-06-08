@@ -14,6 +14,10 @@ namespace Sandbox.WebApi.Controllers
     {
         readonly ReturnTypeRepository _repository = new ReturnTypeRepository();
 
+        /// <summary>
+        /// Gets all possible return types for wrapped code result
+        /// </summary>
+        /// <returns>Collection of possible result types</returns>
         [Route("")]
         public IEnumerable<ReturnType> Get()
         {

@@ -19,12 +19,22 @@ namespace Sandbox.WebApi.Controllers
     {
         readonly LibraryRepository _repository = new LibraryRepository();
 
+        /// <summary>
+        /// Obtains a collection of all libraries in the system
+        /// </summary>
+        /// <returns>Library collection</returns>
         [Route("")]
         public IEnumerable<Library> Get()
         {
             return _repository.GetAll();
         }
 
+        /// <summary>
+        /// Adds a new library.
+        /// Request to this method should be of type multipart/form-data, with the Library entity properties
+        /// provided as form elements and the request should contain a zip file with a valid library implementation
+        /// </summary>
+        /// <returns>Library entity</returns>
         [Route("")]
         public async Task<Library> Post()
         {
@@ -59,6 +69,12 @@ namespace Sandbox.WebApi.Controllers
             return library;
         }
 
+        /// <summary>
+        /// Updates a library. Only the name of the library can be effectively updated
+        /// </summary>
+        /// <param name="id">ID of the library to update</param>
+        /// <param name="library">Library entity</param>
+        /// <returns>Library entity</returns>
         [Route("{id:int}")]
         public Library Put([FromUri] int id, Library library)
         {
@@ -66,6 +82,11 @@ namespace Sandbox.WebApi.Controllers
             return _repository.Update(library);
         }
 
+        /// <summary>
+        /// Deletes a library from the system
+        /// </summary>
+        /// <param name="id">ID of the library to remove</param>
+        /// <returns>Library entity</returns>
         [Route("{id:int}")]
         public Library Delete([FromUri] int id)
         {
