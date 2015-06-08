@@ -27,7 +27,11 @@ namespace Sandbox.Environment.Wrapper
                 {
                     foreach (string library in _args.Libraries)
                     {
-                        writer.WriteLine(@"from {0} import *", library);
+                        DirectoryInfo dir = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), @"extensions\python\", library));
+                        foreach (FileInfo fi in dir.GetFiles())
+                        {
+                            writer.WriteLine(@"from {0} import *", fi.Name.Remove(fi.Name.Length - 3));
+                        }
                     }
                 }
 
