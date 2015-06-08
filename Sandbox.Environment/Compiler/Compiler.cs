@@ -132,11 +132,16 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        protected void ImportLibraryFile(string library, string relativeFilePath)
+        protected void ImportLibraryFile(string library)
         {
-            File.Copy(
-                Path.Combine(ExtensionsDirectory, library, relativeFilePath),
-                Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, relativeFilePath));
+            DirectoryInfo dir = new DirectoryInfo(Path.Combine(ExtensionsDirectory, library));
+            DirectoryInfo di = Directory.CreateDirectory(Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, library));
+            foreach (FileInfo fi in dir.GetFiles())
+            {
+                File.Copy(
+                    Path.Combine(ExtensionsDirectory, library, fi.Name), 
+                    Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, library, fi.Name));
+            }    
         }
         protected static string GetCompilationResult(Process process)
         {

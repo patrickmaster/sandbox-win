@@ -33,7 +33,7 @@ namespace Sandbox.Environment.Compiler
             {
                 foreach (string library in Args.Libraries)
                 {
-                    ImportLibraryFile(library, library + ".jar");
+                    ImportLibraryFile(library);
                 }
             }
         }

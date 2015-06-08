@@ -36,7 +36,7 @@ namespace Sandbox.Environment.Compiler
             {
                 foreach (string library in Args.Libraries)
                 {
-                    ImportLibraryFile(library, library + ".dll");
+                    ImportLibraryFile(library);
                 }
             }
         }
@@ -50,8 +50,13 @@ namespace Sandbox.Environment.Compiler
             {
                 foreach (string library in Args.Libraries)
                 {
-                    File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
-                        Path.Combine(PackageDirectory, library + ".dll"));
+                    DirectoryInfo dir = new DirectoryInfo(Path.Combine(TemporaryDirectory, library));
+                    DirectoryInfo di = Directory.CreateDirectory(Path.Combine(PackageDirectory, library));
+                    foreach (FileInfo fi in dir.GetFiles())
+                    {
+                        File.Move(Path.Combine(TemporaryDirectory, library, fi.Name),
+                            Path.Combine(PackageDirectory, fi.Name));
+                    } 
                 }
             }
         }
@@ -68,7 +73,11 @@ namespace Sandbox.Environment.Compiler
             {
                 foreach (string library in Args.Libraries)
                 {
-                    parameters.ReferencedAssemblies.Add(Path.Combine(TemporaryDirectory, library + ".dll"));
+                    DirectoryInfo dir = new DirectoryInfo(Path.Combine(TemporaryDirectory, library));
+                    foreach (FileInfo fi in dir.GetFiles())
+                    {
+                        parameters.ReferencedAssemblies.Add(Path.Combine(TemporaryDirectory, library, fi.Name));
+                    } 
                 }
             }
 
