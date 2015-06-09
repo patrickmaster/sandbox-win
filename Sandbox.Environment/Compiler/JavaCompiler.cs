@@ -47,8 +47,13 @@ namespace Sandbox.Environment.Compiler
             {
                 foreach (string library in Args.Libraries)
                 {
-                    File.Move(Path.Combine(TemporaryDirectory, library + ".jar"),
-                        Path.Combine(PackageDirectory, library + ".jar"));
+                    DirectoryInfo dir = new DirectoryInfo(Path.Combine(TemporaryDirectory, library));
+                    DirectoryInfo di = Directory.CreateDirectory(Path.Combine(PackageDirectory, library));
+                    foreach (FileInfo fi in dir.GetFiles())
+                    {
+                        File.Move(Path.Combine(TemporaryDirectory, library, fi.Name),
+                            Path.Combine(PackageDirectory, fi.Name));
+                    }
                 }
             }
         }
@@ -56,18 +61,19 @@ namespace Sandbox.Environment.Compiler
         protected override void CompileSource(string sourceFilePath, string targetFilePath)
         {
             Process process = new Process();
-            string javaArgs = string.Format(@"-cp .;""{0}\*""; ""{1}""", TemporaryDirectory, sourceFilePath);
-          
-            process.StartInfo = new ProcessStartInfo
+            foreach (string library in Args.Libraries)
             {
-                FileName = GetCompilatorPath(),
-                Arguments = javaArgs,
-                WorkingDirectory = Path.GetDirectoryName(sourceFilePath),
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            };
-
+                string javaArgs = string.Format(@"-cp .;""{0}\{1}\*""; ""{2}""", TemporaryDirectory, library, sourceFilePath);
+                process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = GetCompilatorPath(),
+                    Arguments = javaArgs,
+                    WorkingDirectory = Path.GetDirectoryName(sourceFilePath),
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                };
+            }
             process.Start();
             string compilationResult = GetCompilationResult(process);
             process.WaitForExit();
