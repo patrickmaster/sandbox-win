@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Sandbox.Contracts.Types.Code;
 using Sandbox.Environment.Compiler;
 
 namespace Sandbox.Environment.Wrapper
 {
-    class NativeExecutableCodeWrapper : IWrapper
+    class NativeWrapper : IWrapper
     {
-        private CompilerArgs _args;
+        private readonly CompilerArgs _args;
 
-        public NativeExecutableCodeWrapper(CompilerArgs args)
+        public NativeWrapper(CompilerArgs args)
         {
             _args = args;
         }
@@ -21,12 +24,9 @@ namespace Sandbox.Environment.Wrapper
                 writer.WriteLine(@"#include <stdio.h>");
                 writer.WriteLine(@"#include <iostream>");
 
-                if (_args.Libraries != null)
+                foreach (string lib in NativeHelper.GetAllHeaders(_args.Libraries))
                 {
-                    foreach (string library in _args.Libraries)
-                    {
-                        writer.WriteLine(@"#include ""{0}.h""", library);
-                    }
+                    writer.WriteLine(@"#include ""{0}.h""", lib);
                 }
 
                 writer.WriteLine(@"{0} resolve()", GetTypeRepresentation(_args.ReturnType));
@@ -42,6 +42,7 @@ namespace Sandbox.Environment.Wrapper
                 writer.WriteLine(@"}");
             }
         }
+
 
         private string GetTypeRepresentation(VariableType type)
         {

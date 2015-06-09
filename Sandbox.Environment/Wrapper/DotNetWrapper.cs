@@ -31,7 +31,11 @@ namespace Sandbox.Environment.Wrapper
                 {
                     foreach (string library in _args.Libraries)
                     {
-                        DirectoryInfo dir = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), @"extensions\dotnet\", library));
+                        DirectoryInfo dir = new DirectoryInfo(Path.Combine(
+                            Directory.GetCurrentDirectory(), 
+                            @"extensions\dotnet\", 
+                            library));
+                        
                         foreach (FileInfo fi in dir.GetFiles())
                         {
                             writer.WriteLine(@"using {0};", fi.Name.Remove(fi.Name.Length - 4));

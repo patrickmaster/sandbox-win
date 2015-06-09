@@ -16,7 +16,7 @@ namespace Sandbox.Environment.Compiler
     class NativeCompiler : BinaryCompiler
     {
         protected override string SourceExtension { get { return "cpp"; } }
-        
+
         protected override string LibraryExtension { get { return "dll"; } }
 
         protected override string ExecutableExtension { get { return "exe"; } }
@@ -24,7 +24,7 @@ namespace Sandbox.Environment.Compiler
 
         protected override IWrapper GetCodeWrapper(CompilerArgs args)
         {
-            return new NativeExecutableCodeWrapper(args);
+            return new NativeWrapper(args);
         }
 
         protected override void ImportLibraries()
@@ -34,22 +34,6 @@ namespace Sandbox.Environment.Compiler
                 foreach (string library in Args.Libraries)
                 {
                     ImportLibraryFile(library);
-                    ImportLibraryFile(library);
-                }
-            }
-        }
-
-        protected override void MoveToTargetDirectory()
-        {
-            File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
-                Path.Combine(PackageDirectory, ExecutableFile));
-
-            if (Args.Libraries != null)
-            {
-                foreach (string library in Args.Libraries)
-                {
-                    File.Move(Path.Combine(TemporaryDirectory, library + ".dll"),
-                        Path.Combine(PackageDirectory, library + ".dll"));
                 }
             }
         }
@@ -62,9 +46,9 @@ namespace Sandbox.Environment.Compiler
             if (Args.Libraries != null && Args.Libraries.Any())
             {
                 gccArgs += " -L.";
-                foreach (string library in Args.Libraries)
+                foreach (string header in NativeHelper.GetAllHeaders(Args.Libraries))
                 {
-                    gccArgs += " -l" + library;
+                    gccArgs += " -l" + header;
                 }
             }
 

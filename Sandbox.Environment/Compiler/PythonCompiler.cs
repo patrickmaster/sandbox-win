@@ -33,8 +33,8 @@ namespace Sandbox.Environment.Compiler
         protected override void ValidateSource(string sourceFilePath)
         {
             Process process = new Process();
-            MoveToTarget();
             string pythonArgs = string.Format(@"-m py_compile ""{0}""", sourceFilePath);
+
             process.StartInfo = new ProcessStartInfo
             {
                 FileName = GetPythonPath(),
@@ -59,23 +59,6 @@ namespace Sandbox.Environment.Compiler
         {
             string configPath = ConfigurationManager.AppSettings["PythonPath"];
             return string.IsNullOrEmpty(configPath) ? "python" : configPath;
-        }
-
-        private void MoveToTarget()
-        {
-            if (Args.Libraries != null)
-            {
-                foreach (string library in Args.Libraries)
-                {
-                    DirectoryInfo dir = new DirectoryInfo(Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, library));
-                    foreach (FileInfo fi in dir.GetFiles())
-                    {
-                        File.Copy(
-                            Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, library, fi.Name),
-                            Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, fi.Name));
-                    }    
-                }
-            }
         }
 
         protected override void ImportLibraries()

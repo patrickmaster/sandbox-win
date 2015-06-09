@@ -41,26 +41,6 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        protected override void MoveToTargetDirectory()
-        {
-            File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
-                Path.Combine(PackageDirectory, ExecutableFile));
-
-            if (Args.Libraries != null)
-            {
-                foreach (string library in Args.Libraries)
-                {
-                    DirectoryInfo dir = new DirectoryInfo(Path.Combine(TemporaryDirectory, library));
-                    DirectoryInfo di = Directory.CreateDirectory(Path.Combine(PackageDirectory, library));
-                    foreach (FileInfo fi in dir.GetFiles())
-                    {
-                        File.Move(Path.Combine(TemporaryDirectory, library, fi.Name),
-                            Path.Combine(PackageDirectory, fi.Name));
-                    } 
-                }
-            }
-        }
-
         protected override void CompileSource(string sourceFilePath, string targetFile)
         {
             CSharpCodeProvider codeProvider = new CSharpCodeProvider();
@@ -71,13 +51,10 @@ namespace Sandbox.Environment.Compiler
 
             if (Args.Libraries != null)
             {
-                foreach (string library in Args.Libraries)
+                DirectoryInfo dir = new DirectoryInfo(PackageDirectory);
+                foreach (FileInfo fi in dir.GetFiles("*.dll"))
                 {
-                    DirectoryInfo dir = new DirectoryInfo(Path.Combine(TemporaryDirectory, library));
-                    foreach (FileInfo fi in dir.GetFiles())
-                    {
-                        parameters.ReferencedAssemblies.Add(Path.Combine(TemporaryDirectory, library, fi.Name));
-                    } 
+                    parameters.ReferencedAssemblies.Add(Path.Combine(PackageDirectory, fi.Name));
                 }
             }
 

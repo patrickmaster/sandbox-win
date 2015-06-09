@@ -12,7 +12,6 @@ namespace Sandbox.Environment.Executor
     {
         public string Run(ExecutorArgs args)
         {
-            string result;
             Process process = new Process();
             string executablePath = Path.Combine(EnvironmentPath.GetPackageDirectory(args.Platform, args.PackageName), args.PackageName + ".exe");
             
@@ -23,6 +22,9 @@ namespace Sandbox.Environment.Executor
                 RedirectStandardError = true,
                 UseShellExecute = false
             };
+
+            process.StartInfo.EnvironmentVariables["Path"] += 
+                ";" + Path.GetDirectoryName(ConfigurationManager.AppSettings["NativeCompilerPath"]);
 
             process.Start();
             process.WaitForExit();

@@ -9,12 +9,6 @@ namespace Sandbox.Environment.Compiler
 {
     abstract class ScriptCompiler : Compiler
     {
-
-        protected override bool UseTemporaryDirectory
-        {
-            get { return false; }
-        }
-
         public sealed override void Compile(CompilerArgs args)
         {
             base.Compile(args);

@@ -24,8 +24,6 @@ namespace Sandbox.Environment.Compiler
 
         protected abstract string ExecutableExtension { get; }
 
-        protected abstract bool UseTemporaryDirectory { get; }
-
         protected abstract IWrapper GetCodeWrapper(CompilerArgs args);
 
         protected string ExecutableFile
@@ -36,11 +34,6 @@ namespace Sandbox.Environment.Compiler
         protected string SourceFile
         {
             get { return string.Format("{0}.{1}", Args.PackageName, SourceExtension); }
-        }
-
-        protected string TemporaryDirectory
-        {
-            get { return EnvironmentPath.GetTemporaryDirectory(Args.Platform, Args.PackageName); }
         }
 
         protected string ExtensionsDirectory
@@ -93,19 +86,6 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        protected void CreateTemporaryDirectory()
-        {
-            Directory.CreateDirectory(TemporaryDirectory);
-        }
-
-        protected void RemoveTemporaryDirectoryIfExists()
-        {
-            if (Directory.Exists(TemporaryDirectory))
-            {
-                Directory.Delete(TemporaryDirectory, true);
-            }
-        }
-
         protected void ThrowCompilationError(string compilationResult)
         {
             throw new CompilerException(compilationResult);
@@ -113,7 +93,7 @@ namespace Sandbox.Environment.Compiler
 
         protected void SaveToFile()
         {
-            string filePath = Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, SourceFile);
+            string filePath = Path.Combine(PackageDirectory, SourceFile);
 
             using (FileStream stream = new FileStream(filePath, FileMode.Create))
             {
@@ -135,12 +115,12 @@ namespace Sandbox.Environment.Compiler
         protected void ImportLibraryFile(string library)
         {
             DirectoryInfo dir = new DirectoryInfo(Path.Combine(ExtensionsDirectory, library));
-            DirectoryInfo di = Directory.CreateDirectory(Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, library));
+            
             foreach (FileInfo fi in dir.GetFiles())
             {
                 File.Copy(
                     Path.Combine(ExtensionsDirectory, library, fi.Name), 
-                    Path.Combine(UseTemporaryDirectory ? TemporaryDirectory : PackageDirectory, library, fi.Name));
+                    Path.Combine(PackageDirectory, fi.Name));
             }    
         }
         protected static string GetCompilationResult(Process process)

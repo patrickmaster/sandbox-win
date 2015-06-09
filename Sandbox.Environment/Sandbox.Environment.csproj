@@ -99,11 +99,13 @@
     <Compile Include="Executor\JavaExecutor.cs" />
     <Compile Include="Executor\DotNetExecutor.cs" />
     <Compile Include="Executor\PythonExecutor.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="NativeHelper.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Wrapper\DotNetWrapper.cs" />
     <Compile Include="Wrapper\IWrapper.cs" />
     <Compile Include="Wrapper\JavaWrapper.cs" />
-    <Compile Include="Wrapper\NativeExecutableCodeWrapper.cs" />
+    <Compile Include="Wrapper\NativeWrapper.cs" />
     <Compile Include="Configuration\EnvironmentPath.cs" />
     <Compile Include="Executor\Manager.cs" />
     <Compile Include="Executor\NativeExecutor.cs" />

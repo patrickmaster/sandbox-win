@@ -38,32 +38,12 @@ namespace Sandbox.Environment.Compiler
             }
         }
 
-        protected override void MoveToTargetDirectory()
-        {
-            File.Move(Path.Combine(TemporaryDirectory, ExecutableFile),
-                Path.Combine(PackageDirectory, ExecutableFile));
-
-            if (Args.Libraries != null)
-            {
-                foreach (string library in Args.Libraries)
-                {
-                    DirectoryInfo dir = new DirectoryInfo(Path.Combine(TemporaryDirectory, library));
-                    DirectoryInfo di = Directory.CreateDirectory(Path.Combine(PackageDirectory, library));
-                    foreach (FileInfo fi in dir.GetFiles())
-                    {
-                        File.Move(Path.Combine(TemporaryDirectory, library, fi.Name),
-                            Path.Combine(PackageDirectory, fi.Name));
-                    }
-                }
-            }
-        }
-
         protected override void CompileSource(string sourceFilePath, string targetFilePath)
         {
             Process process = new Process();
             foreach (string library in Args.Libraries)
             {
-                string javaArgs = string.Format(@"-cp .;""{0}\{1}\*""; ""{2}""", TemporaryDirectory, library, sourceFilePath);
+                string javaArgs = string.Format(@"-cp .;""*""; ""{0}""", sourceFilePath);
                 process.StartInfo = new ProcessStartInfo
                 {
                     FileName = GetCompilatorPath(),
